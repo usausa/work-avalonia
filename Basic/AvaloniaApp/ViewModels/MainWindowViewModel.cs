@@ -1,7 +1,6 @@
-﻿namespace AvaloniaApp.ViewModels
+namespace AvaloniaApp.ViewModels;
+
+public partial class MainWindowViewModel : ViewModelBase
 {
-    public partial class MainWindowViewModel : ViewModelBase
-    {
-        public string Greeting { get; } = "Welcome to Avalonia!";
-    }
+    public string Greeting { get; } = "Welcome to Avalonia!";
 }

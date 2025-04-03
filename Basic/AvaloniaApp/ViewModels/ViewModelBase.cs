@@ -1,8 +1,7 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+namespace AvaloniaApp.ViewModels;
 
-namespace AvaloniaApp.ViewModels
+using CommunityToolkit.Mvvm.ComponentModel;
+
+public abstract class ViewModelBase : ObservableObject
 {
-    public class ViewModelBase : ObservableObject
-    {
-    }
 }
