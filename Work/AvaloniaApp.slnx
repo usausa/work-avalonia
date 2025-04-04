@@ -1,4 +1,9 @@
 <Solution>
+  <Folder Name="/Library/">
+    <Project Path="Smart.Avalonia/Smart.Avalonia.csproj" />
+    <Project Path="Smart.Navigation.Avalonia/Smart.Navigation.Avalonia.csproj" />
+    <Project Path="Smart.Navigation/Smart.Navigation.csproj" />
+  </Folder>
   <Folder Name="/Solution Items/">
     <File Path=".editorconfig" />
     <File Path=".gitattributes" />

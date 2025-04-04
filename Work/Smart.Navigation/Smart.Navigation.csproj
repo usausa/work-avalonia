@@ -1,0 +1,15 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>net9.0;net8.0</TargetFrameworks>
+    <CodeAnalysisRuleSet>..\Analyzers.ruleset</CodeAnalysisRuleSet>
+    <NoWarn>$(NoWarn);NU5118;NU5129</NoWarn>
+    <RootNamespace>Smart</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Usa.Smart.Converter" Version="2.4.0" />
+    <PackageReference Include="Usa.Smart.Core" Version="2.4.0" />
+  </ItemGroup>
+
+</Project>
