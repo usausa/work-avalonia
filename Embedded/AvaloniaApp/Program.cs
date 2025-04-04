@@ -11,8 +11,8 @@ internal static class Program
     public static void Main(string[] args)
     {
         var builder = BuildAvaloniaApp();
-        builder.StartLinuxFbDev(args, "/dev/fb0");
-        //.StartWithClassicDesktopLifetime(args);
+        //builder.StartLinuxFbDev(args, "/dev/fb0");
+        builder.StartLinuxDrm(args, "/dev/dri/card0", 1);
     }
 
     // Avalonia configuration, don't remove; also used by visual designer.
