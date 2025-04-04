@@ -1,0 +1,18 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:views="clr-namespace:AvaloniaApp.Views"
+             mc:Ignorable="d"
+             x:Class="AvaloniaApp.Views.MainPage"
+             x:DataType="views:MainPageViewModel"
+             d:DesignWidth="1680" d:DesignHeight="1050">
+
+    <UserControl.DataContext>
+        <views:MainPageViewModel />
+    </UserControl.DataContext>
+
+    <TextBlock Text="{Binding Greeting}"
+               HorizontalAlignment="Center" VerticalAlignment="Center" />
+
+</UserControl>
