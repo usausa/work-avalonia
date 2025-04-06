@@ -9,7 +9,6 @@
         Width="1920" Height="1080"
         d:DesignWidth="1920" d:DesignHeight="1080"
         CanResize="False"
-        WindowState="FullScreen"
         Icon="/Assets/avalonia-logo.ico">
 
     <views:MainPage />
