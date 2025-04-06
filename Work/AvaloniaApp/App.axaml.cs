@@ -20,6 +20,8 @@ public partial class App : Application
         AvaloniaXamlLoader.Load(this);
 
         host = CreateHost();
+        // TODO
+        //ResolveProvider.Default.Provider = host.Services;
     }
 
     // ReSharper disable once AsyncVoidMethod
@@ -33,7 +35,7 @@ public partial class App : Application
 
             desktop.Exit += async (_, _) =>
             {
-                await host.StopAsync(TimeSpan.FromSeconds(5));
+                await host.StopAsync(TimeSpan.FromSeconds(5)).ConfigureAwait(false);
                 host.Dispose();
             };
 
@@ -43,7 +45,7 @@ public partial class App : Application
 
         base.OnFrameworkInitializationCompleted();
 
-        await host.StartAsync();
+        await host.StartAsync().ConfigureAwait(false);
     }
 
     private static void DisableAvaloniaDataAnnotationValidation()
