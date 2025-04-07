@@ -1,6 +1,6 @@
 namespace Smart.Avalonia.Resolver;
 
-using System.Windows.Markup;
+using global::Avalonia.Markup.Xaml;
 
 public sealed class ResolveExtension : MarkupExtension
 {
@@ -16,5 +16,5 @@ public sealed class ResolveExtension : MarkupExtension
         Type = type;
     }
 
-    public override object? ProvideValue(IServiceProvider serviceProvider) => ResolveProvider.Default.GetService(Type);
+    public override object ProvideValue(IServiceProvider serviceProvider) => ResolveProvider.Default.GetService(Type)!;
 }

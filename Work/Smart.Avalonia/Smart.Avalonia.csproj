@@ -34,6 +34,22 @@
     <Compile Include="Avalonia\Internal\ConvertHelper.cs" />
     <Compile Include="Avalonia\Internal\Functions.cs" />
     <Compile Include="Avalonia\Internal\ListDisposable.cs" />
+    <Compile Include="Avalonia\Messaging\CancelMessage.cs" />
+    <Compile Include="Avalonia\Messaging\CancelRequest.cs" />
+    <Compile Include="Avalonia\Messaging\EventRequest.cs" />
+    <Compile Include="Avalonia\Messaging\IEventRequest.cs" />
+    <Compile Include="Avalonia\Messaging\IMessenger.cs" />
+    <Compile Include="Avalonia\Messaging\Messenger.cs" />
+    <Compile Include="Avalonia\Messaging\MessengerEventArgs.cs" />
+    <Compile Include="Avalonia\Messaging\ParameterEventArgs.cs" />
+    <Compile Include="Avalonia\Messaging\ResolveRequest.cs" />
+    <Compile Include="Avalonia\Messaging\ResultEventArgs.cs" />
+    <Compile Include="Avalonia\Resolver\DefaultResolveProvider.cs" />
+    <Compile Include="Avalonia\Resolver\ResolveExtension.cs" />
+    <Compile Include="Avalonia\Resolver\ResolveProvider.cs" />
+    <Compile Include="Avalonia\ViewModels\BusyState.cs" />
+    <Compile Include="Avalonia\ViewModels\BusyStateExtensions.cs" />
+    <Compile Include="Avalonia\ViewModels\IBusyState.cs" />
   </ItemGroup>
 
   <ItemGroup>
