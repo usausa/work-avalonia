@@ -1,6 +1,32 @@
 namespace ControlApp.Views;
 
-public partial class MainWindowViewModel : ViewModelBase
+using System.Diagnostics;
+
+using Gamepad;
+
+public sealed partial class MainWindowViewModel : ViewModelBase, IDisposable
 {
+    private readonly GamepadController controller = new();
+
     public string Greeting { get; } = "Welcome to Avalonia!";
+
+    public MainWindowViewModel()
+    {
+        // TODO timer方式？
+        controller.AxisChanged += (_, args) =>
+        {
+            // Handle axis change
+            Debug.WriteLine($"Axis {args.Axis} changed to {args.Value}");
+        };
+        controller.ButtonChanged += (_, args) =>
+        {
+            // Handle button change
+            Debug.WriteLine($"Button {args.Button} changed to {args.Pressed}");
+        };
+    }
+
+    public void Dispose()
+    {
+        controller.Dispose();
+    }
 }

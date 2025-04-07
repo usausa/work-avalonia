@@ -12,4 +12,5 @@
   <Project Path="ControlApp/ControlApp.csproj">
     <Deploy />
   </Project>
+  <Project Path="WorkApp/WorkApp.csproj" />
 </Solution>
