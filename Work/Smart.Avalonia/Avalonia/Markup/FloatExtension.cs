@@ -1,9 +1,7 @@
 namespace Smart.Avalonia.Markup;
 
-using System.Windows.Markup;
+using global::Avalonia.Markup.Xaml;
 
-[ContentProperty("Value")]
-[MarkupExtensionReturnType(typeof(float))]
 public sealed class FloatExtension : MarkupExtension
 {
     public float Value { get; set; }

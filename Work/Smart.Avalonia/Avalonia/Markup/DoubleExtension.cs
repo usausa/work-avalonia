@@ -1,9 +1,7 @@
 namespace Smart.Avalonia.Markup;
 
-using System.Windows.Markup;
+using global::Avalonia.Markup.Xaml;
 
-[ContentProperty("Value")]
-[MarkupExtensionReturnType(typeof(double))]
 public sealed class DoubleExtension : MarkupExtension
 {
     public double Value { get; set; }

@@ -1,9 +1,7 @@
 namespace Smart.Avalonia.Markup;
 
-using System.Windows.Markup;
+using global::Avalonia.Markup.Xaml;
 
-[ContentProperty("Value")]
-[MarkupExtensionReturnType(typeof(short))]
 public sealed class Int16Extension : MarkupExtension
 {
     public short Value { get; set; }

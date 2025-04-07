@@ -34,6 +34,12 @@
     <Compile Include="Avalonia\Internal\ConvertHelper.cs" />
     <Compile Include="Avalonia\Internal\Functions.cs" />
     <Compile Include="Avalonia\Internal\ListDisposable.cs" />
+    <Compile Include="Avalonia\Markup\BoolExtension.cs" />
+    <Compile Include="Avalonia\Markup\DoubleExtension.cs" />
+    <Compile Include="Avalonia\Markup\FloatExtension.cs" />
+    <Compile Include="Avalonia\Markup\Int16Extension.cs" />
+    <Compile Include="Avalonia\Markup\Int32Extension.cs" />
+    <Compile Include="Avalonia\Markup\Int64Extension.cs" />
     <Compile Include="Avalonia\Messaging\CancelMessage.cs" />
     <Compile Include="Avalonia\Messaging\CancelRequest.cs" />
     <Compile Include="Avalonia\Messaging\EventRequest.cs" />
@@ -55,6 +61,10 @@
   <ItemGroup>
     <PackageReference Include="Avalonia" Version="11.2.6" />
     <PackageReference Include="Usa.Smart.Core" Version="2.4.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Avalonia\Input\" />
   </ItemGroup>
 
 </Project>

@@ -1,9 +1,7 @@
 namespace Smart.Avalonia.Markup;
 
-using System.Windows.Markup;
+using global::Avalonia.Markup.Xaml;
 
-[ContentProperty("Value")]
-[MarkupExtensionReturnType(typeof(bool))]
 public sealed class BoolExtension : MarkupExtension
 {
     public bool Value { get; set; }
