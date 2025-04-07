@@ -4,8 +4,12 @@ using System.Diagnostics;
 
 using Gamepad;
 
+using Iot.Device.BuildHat;
+
 public sealed partial class MainWindowViewModel : ViewModelBase, IDisposable
 {
+    private readonly Brick brick = new("/dev/serial0");
+
     private readonly GamepadController controller = new();
 
     public string Greeting { get; } = "Welcome to Avalonia!";
@@ -28,5 +32,6 @@ public sealed partial class MainWindowViewModel : ViewModelBase, IDisposable
     public void Dispose()
     {
         controller.Dispose();
+        brick.Dispose();
     }
 }
