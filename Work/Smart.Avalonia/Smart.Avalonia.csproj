@@ -25,6 +25,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Include="Windows\Data\AllConverter.cs" />
+    <Compile Include="Windows\Data\AnyConverter.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Avalonia" Version="11.2.6" />
     <PackageReference Include="Usa.Smart.Core" Version="2.4.1" />
   </ItemGroup>
