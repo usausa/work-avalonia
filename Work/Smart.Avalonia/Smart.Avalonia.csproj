@@ -3,6 +3,30 @@
   <PropertyGroup>
     <TargetFramework>net9.0</TargetFramework>
     <CodeAnalysisRuleSet>..\Analyzers.ruleset</CodeAnalysisRuleSet>
+    <RootNamespace>Smart</RootNamespace>
   </PropertyGroup>
+
+  <PropertyGroup>
+    <PackageId>Usa.Smart.Navigation.Avalonia</PackageId>
+    <Title>Smart.Navigation.Avalonia</Title>
+    <Description>Smart navigation library avalonia provider</Description>
+    <PackageTags>smart navigation avalonia mvvm</PackageTags>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <AvaloniaXaml Remove="Threading\**" />
+    <AvaloniaXaml Remove="Windows\**" />
+    <Compile Remove="Threading\**" />
+    <Compile Remove="Windows\**" />
+    <EmbeddedResource Remove="Threading\**" />
+    <EmbeddedResource Remove="Windows\**" />
+    <None Remove="Threading\**" />
+    <None Remove="Windows\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Avalonia" Version="11.2.6" />
+    <PackageReference Include="Usa.Smart.Core" Version="2.4.1" />
+  </ItemGroup>
 
 </Project>

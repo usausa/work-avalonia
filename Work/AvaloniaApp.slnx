@@ -2,6 +2,8 @@
   <Folder Name="/Library/">
     <Project Path="Smart.Avalonia/Smart.Avalonia.csproj" />
     <Project Path="Smart.Navigation.Avalonia/Smart.Navigation.Avalonia.csproj" />
+  </Folder>
+  <Folder Name="/Library/Ref/" Id="ddb4ef12-cc4e-5e88-e6fc-71a802f4de97">
     <Project Path="Smart.Navigation.Resolver/Smart.Navigation.Resolver.csproj" />
     <Project Path="Smart.Navigation/Smart.Navigation.csproj" />
   </Folder>
