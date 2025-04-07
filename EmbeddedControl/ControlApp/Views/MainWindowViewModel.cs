@@ -2,6 +2,9 @@ namespace ControlApp.Views;
 
 using System.Diagnostics;
 
+using Avalonia.Threading;
+using CommunityToolkit.Mvvm.ComponentModel;
+
 using Gamepad;
 
 using Iot.Device.BuildHat;
@@ -14,24 +17,63 @@ public sealed partial class MainWindowViewModel : ViewModelBase, IDisposable
 
     public string Greeting { get; } = "Welcome to Avalonia!";
 
+    private readonly PeriodicTimer timer;
+    private readonly CancellationTokenSource cancellationTokenSource;
+
+    [ObservableProperty]
+    public partial int Fps { get; set; }
+
     public MainWindowViewModel()
     {
-        // TODO timer方式？
-        controller.AxisChanged += (_, args) =>
-        {
-            // Handle axis change
-            Debug.WriteLine($"Axis {args.Axis} changed to {args.Value}");
-        };
-        controller.ButtonChanged += (_, args) =>
-        {
-            // Handle button change
-            Debug.WriteLine($"Button {args.Button} changed to {args.Pressed}");
-        };
+        timer = new PeriodicTimer(TimeSpan.FromMilliseconds(1000d / 60));
+        cancellationTokenSource = new CancellationTokenSource();
+
+        _ = StartTimerAsync();
     }
 
     public void Dispose()
     {
+        cancellationTokenSource.Cancel();
+        cancellationTokenSource.Dispose();
+        timer.Dispose();
         controller.Dispose();
         brick.Dispose();
+    }
+
+    private async Task StartTimerAsync()
+    {
+        //IsRunning = true;
+
+        try
+        {
+            // Low resolution
+            var fps = 0;
+            var watch = Stopwatch.StartNew();
+            while (await timer.WaitForNextTickAsync(cancellationTokenSource.Token))
+            {
+                fps++;
+
+                // TODO get controller state
+
+                if (watch.ElapsedMilliseconds > 1000)
+                {
+                    await Dispatcher.UIThread.InvokeAsync(() =>
+                    {
+                        Fps = fps;
+                    });
+
+                    fps = 0;
+                    watch.Restart();
+                }
+            }
+        }
+        catch (OperationCanceledException)
+        {
+            // Ignore
+        }
+        finally
+        {
+            //IsRunning = false;
+        }
     }
 }
