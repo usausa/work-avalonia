@@ -15,18 +15,25 @@
 
   <ItemGroup>
     <AvaloniaXaml Remove="Threading\**" />
-    <AvaloniaXaml Remove="Windows\**" />
+    <AvaloniaXaml Remove="Avalonia\**" />
     <Compile Remove="Threading\**" />
-    <Compile Remove="Windows\**" />
+    <Compile Remove="Avalonia\**" />
     <EmbeddedResource Remove="Threading\**" />
-    <EmbeddedResource Remove="Windows\**" />
+    <EmbeddedResource Remove="Avalonia\**" />
     <None Remove="Threading\**" />
-    <None Remove="Windows\**" />
+    <None Remove="Avalonia\**" />
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Include="Windows\Data\AllConverter.cs" />
-    <Compile Include="Windows\Data\AnyConverter.cs" />
+    <Compile Include="Avalonia\Data\AllConverter.cs" />
+    <Compile Include="Avalonia\Data\AnyConverter.cs" />
+    <Compile Include="Avalonia\Expressions\BinaryExpressions.cs" />
+    <Compile Include="Avalonia\Expressions\CompareExpressions.cs" />
+    <Compile Include="Avalonia\Expressions\IBinaryExpression.cs" />
+    <Compile Include="Avalonia\Expressions\ICompareExpression.cs" />
+    <Compile Include="Avalonia\Internal\ConvertHelper.cs" />
+    <Compile Include="Avalonia\Internal\Functions.cs" />
+    <Compile Include="Avalonia\Internal\ListDisposable.cs" />
   </ItemGroup>
 
   <ItemGroup>
