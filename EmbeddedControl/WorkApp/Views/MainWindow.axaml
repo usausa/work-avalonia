@@ -21,17 +21,15 @@
     </Design.DataContext>
 
     <Grid>
-
         <TextBlock HorizontalAlignment="Right"
                    Foreground="White"
-                   Text="{Binding Fps, StringFormat={}{0} fps}"
-                   FontFamily="Courier New" />
+                   Text="{Binding Fps, StringFormat={}{0} fps}" />
 
         <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center"
                    Foreground="White"
                    FontSize="72"
                    Text="{Binding Speed}"
-                   FontFamily="Courier New" />
+                   FontFamily="{StaticResource Gkktt}" />
     </Grid>
 
 </Window>
