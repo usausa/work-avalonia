@@ -12,8 +12,8 @@ public sealed partial class MainWindowViewModel : ViewModelBase, IDisposable
     private const double AccelVelocity2 = 48d / 60;
     private const double AccelVelocity3 = 32d / 60;
     private const double AccelVelocity4 = 16d / 60;
-    private const double BrakeVelocity = 80d / 60;
-    private const double DefaultVelocity = 20d / 60;
+    private const double BrakeVelocity = 96d / 60;
+    private const double DefaultVelocity = 32d / 60;
 
     private readonly PeriodicTimer timer;
     private readonly CancellationTokenSource cancellationTokenSource;
