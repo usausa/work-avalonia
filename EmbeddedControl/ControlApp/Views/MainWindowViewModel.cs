@@ -15,8 +15,6 @@ public sealed partial class MainWindowViewModel : ViewModelBase, IDisposable
 
     private readonly GamepadController controller = new();
 
-    public string Greeting { get; } = "Welcome to Avalonia!";
-
     private readonly PeriodicTimer timer;
     private readonly CancellationTokenSource cancellationTokenSource;
 

@@ -8,8 +8,9 @@
         x:DataType="views:MainWindowViewModel"
         Title="WorkApp"
         Width="800" Height="480"
-        Background="Black" CanResize="False" Icon="/Assets/avalonia-logo.ico" d:DesignHeight="480"
-        d:DesignWidth="800">
+        Background="Black"
+        CanResize="False" Icon="/Assets/avalonia-logo.ico" KeyDown="OnKeyDown" KeyUp="OnKeyUp"
+        d:DesignHeight="480" d:DesignWidth="800">
 
     <Design.DataContext>
         <!--
@@ -19,7 +20,16 @@
         <views:MainWindowViewModel />
     </Design.DataContext>
 
-    <TextBlock Text="{Binding Greeting}"
-               HorizontalAlignment="Center" VerticalAlignment="Center" />
+    <Grid>
+
+        <TextBlock HorizontalAlignment="Right"
+                   Foreground="White"
+                   Text="{Binding Fps, StringFormat={}{0} fps}" />
+
+        <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center"
+                   Foreground="White"
+                   FontSize="72"
+                   Text="{Binding Speed}" />
+    </Grid>
 
 </Window>
