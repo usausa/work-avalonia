@@ -24,12 +24,14 @@
 
         <TextBlock HorizontalAlignment="Right"
                    Foreground="White"
-                   Text="{Binding Fps, StringFormat={}{0} fps}" />
+                   Text="{Binding Fps, StringFormat={}{0} fps}"
+                   FontFamily="Courier New" />
 
         <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center"
                    Foreground="White"
                    FontSize="72"
-                   Text="{Binding Speed}" />
+                   Text="{Binding Speed}"
+                   FontFamily="Courier New" />
     </Grid>
 
 </Window>

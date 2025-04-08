@@ -8,8 +8,11 @@ using CommunityToolkit.Mvvm.ComponentModel;
 
 public sealed partial class MainWindowViewModel : ViewModelBase, IDisposable
 {
-    private const double AccelVelocity = 32d / 60;
-    private const double BrakeVelocity = 48d / 60;
+    private const double AccelVelocity1 = 64d / 60;
+    private const double AccelVelocity2 = 48d / 60;
+    private const double AccelVelocity3 = 32d / 60;
+    private const double AccelVelocity4 = 16d / 60;
+    private const double BrakeVelocity = 80d / 60;
     private const double DefaultVelocity = 20d / 60;
 
     private readonly PeriodicTimer timer;
@@ -68,7 +71,14 @@ public sealed partial class MainWindowViewModel : ViewModelBase, IDisposable
                 }
                 else if (accel)
                 {
-                    speed = Math.Min(255, speed + AccelVelocity);
+                    var velocity = speed switch
+                    {
+                        < 128 => AccelVelocity1,
+                        < 192 => AccelVelocity2,
+                        < 224 => AccelVelocity3,
+                        _ => AccelVelocity4
+                    };
+                    speed = Math.Min(255, speed + velocity);
                 }
                 else
                 {
