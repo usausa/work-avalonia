@@ -7,10 +7,10 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <PackageId>Usa.Smart.Navigation.Avalonia</PackageId>
-    <Title>Smart.Navigation.Avalonia</Title>
-    <Description>Smart navigation library avalonia provider</Description>
-    <PackageTags>smart navigation avalonia mvvm</PackageTags>
+    <PackageId>Usa.Smart.Avalonia</PackageId>
+    <Title>Smart.Avalonia</Title>
+    <Description>Smart Avalonia support library</Description>
+    <PackageTags>smart avalonia mvvm</PackageTags>
   </PropertyGroup>
 
   <ItemGroup>
@@ -61,10 +61,6 @@
   <ItemGroup>
     <PackageReference Include="Avalonia" Version="11.2.6" />
     <PackageReference Include="Usa.Smart.Core" Version="2.4.1" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Avalonia\Input\" />
   </ItemGroup>
 
 </Project>

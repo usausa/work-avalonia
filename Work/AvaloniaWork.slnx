@@ -1,5 +1,6 @@
 <Solution>
   <Folder Name="/Library/">
+    <Project Path="Smart.Avalonia.Behaviors/Smart.Avalonia.Behaviors.csproj" Id="d1eb7f9a-15b3-4ab7-aec3-31824103a878" />
     <Project Path="Smart.Avalonia/Smart.Avalonia.csproj" />
     <Project Path="Smart.Navigation.Avalonia/Smart.Navigation.Avalonia.csproj" />
   </Folder>
