@@ -63,7 +63,7 @@ public sealed class SpeedGauge : Control
     public override void Render(DrawingContext context)
     {
         using var op = new ShapeCustomDrawOperation(
-            Bounds,
+            new Rect(0, 0, Bounds.Width, Bounds.Height),
             (float)Speed / MaxSpeed,
             GaugeWidth,
             BackgroundColor.ToSKColor(),
@@ -114,9 +114,14 @@ public sealed class SpeedGauge : Control
             var centerX = (float)(Bounds.Width / 2);
             var centerY = (float)(Bounds.Height / 2);
 
-            var arcSize = (float)Math.Min(Bounds.Width, Bounds.Height) - strokeWidth;
+            var arcSize = (float)Math.Min(Bounds.Width, Bounds.Height);
             var arcRadius = arcSize / 2;
-            var meterRect = new SKRect(centerX - arcRadius, centerY - arcRadius, centerX + arcRadius, centerY + arcRadius);
+            var strokeMargin = strokeWidth / 2;
+            var meterRect = new SKRect(
+                centerX - arcRadius + strokeMargin,
+                centerY - arcRadius + strokeMargin,
+                centerX + arcRadius - strokeMargin,
+                centerY + arcRadius - strokeMargin);
 
             const float startAngle = -210f;
             const float backgroundAngle = 240f;

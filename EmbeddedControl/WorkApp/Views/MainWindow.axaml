@@ -28,13 +28,20 @@
 
         <TextBlock HorizontalAlignment="Right"
                    Foreground="White"
+                   FontSize="12"
                    Text="{Binding Fps, StringFormat={}{0} fps}" />
 
-        <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center"
-                   Foreground="White"
-                   FontSize="96"
-                   Text="{Binding Speed}"
-                   FontFamily="{StaticResource Gkktt}" />
+        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+            <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center"
+                       Foreground="#878A9F"
+                       FontSize="18"
+                       Text="km/h" />
+            <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center"
+                       Foreground="White"
+                       FontSize="96"
+                       Text="{Binding Speed}"
+                       FontFamily="{StaticResource Gkktt}" />
+        </StackPanel>
     </Grid>
 
 </Window>
