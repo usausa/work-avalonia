@@ -6,7 +6,7 @@
         mc:Ignorable="d"
         x:Class="WorkApp.Views.MainWindow"
         x:DataType="views:MainWindowViewModel"
-        Title="WorkApp"
+        Title="ControlApp"
         Width="800" Height="480"
         Background="#2E2F45"
         CanResize="False" Icon="/Assets/avalonia-logo.ico" KeyDown="OnKeyDown" KeyUp="OnKeyUp"
