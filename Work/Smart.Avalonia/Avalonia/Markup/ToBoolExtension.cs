@@ -1,10 +1,9 @@
 namespace Smart.Avalonia.Markup;
 
-using System.Windows.Markup;
+using global::Avalonia.Markup.Xaml;
 
 using Smart.Avalonia.Data;
 
-[MarkupExtensionReturnType(typeof(TextToBoolConverter))]
 public sealed class TextToBoolExtension : MarkupExtension
 {
     public string? True { get; set; }
@@ -15,7 +14,6 @@ public sealed class TextToBoolExtension : MarkupExtension
         new TextToBoolConverter { TrueValue = True, FalseValue = False };
 }
 
-[MarkupExtensionReturnType(typeof(IntToBoolConverter))]
 public sealed class IntToBoolExtension : MarkupExtension
 {
     public int True { get; set; }

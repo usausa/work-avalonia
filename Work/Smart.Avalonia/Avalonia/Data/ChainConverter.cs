@@ -2,11 +2,9 @@ namespace Smart.Avalonia.Data;
 
 using System.Collections.ObjectModel;
 using System.Globalization;
-using System.Windows.Data;
-using System.Windows.Markup;
 
-[ContentProperty("Converters")]
-[ValueConversion(typeof(object), typeof(object))]
+using global::Avalonia.Data.Converters;
+
 public sealed class ChainConverter : IValueConverter
 {
     public Collection<IValueConverter> Converters { get; } = new([]);

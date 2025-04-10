@@ -27,6 +27,12 @@
   <ItemGroup>
     <Compile Include="Avalonia\Data\AllConverter.cs" />
     <Compile Include="Avalonia\Data\AnyConverter.cs" />
+    <Compile Include="Avalonia\Data\BinaryConverter.cs" />
+    <Compile Include="Avalonia\Data\ChainConverter.cs" />
+    <Compile Include="Avalonia\Data\ContainsConverter.cs" />
+    <Compile Include="Avalonia\Data\ObjectConvertConverter.cs" />
+    <Compile Include="Avalonia\Data\ToLowerConverter.cs" />
+    <Compile Include="Avalonia\Data\ToUpperConverter.cs" />
     <Compile Include="Avalonia\Expressions\BinaryExpressions.cs" />
     <Compile Include="Avalonia\Expressions\CompareExpressions.cs" />
     <Compile Include="Avalonia\Expressions\IBinaryExpression.cs" />
@@ -60,6 +66,7 @@
 
   <ItemGroup>
     <PackageReference Include="Avalonia" Version="11.2.6" />
+    <PackageReference Include="Usa.Smart.Converter" Version="2.4.0" />
     <PackageReference Include="Usa.Smart.Core" Version="2.4.1" />
   </ItemGroup>
 

@@ -1,11 +1,11 @@
 namespace Smart.Avalonia.Data;
 
 using System.Globalization;
-using System.Windows.Data;
+
+using global::Avalonia.Data.Converters;
 
 using Smart.Avalonia.Expressions;
 
-[ValueConversion(typeof(object), typeof(object))]
 public sealed class BinaryConverter : IValueConverter
 {
     public IBinaryExpression Expression { get; set; } = default!;

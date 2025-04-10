@@ -1,7 +1,8 @@
 namespace Smart.Avalonia.Data;
 
 using System.Globalization;
-using System.Windows.Data;
+
+using global::Avalonia.Data.Converters;
 
 using Smart.Converter;
 

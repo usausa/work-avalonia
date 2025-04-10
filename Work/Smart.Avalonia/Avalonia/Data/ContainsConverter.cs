@@ -2,9 +2,9 @@ namespace Smart.Avalonia.Data;
 
 using System.Collections;
 using System.Globalization;
-using System.Windows;
-using System.Windows.Data;
-using System.Windows.Media;
+
+using global::Avalonia.Data.Converters;
+using global::Avalonia.Media;
 
 public abstract class ContainsConverter<T> : IValueConverter
 {
@@ -23,7 +23,6 @@ public abstract class ContainsConverter<T> : IValueConverter
     }
 }
 
-[ValueConversion(typeof(object), typeof(bool))]
 public sealed class ContainsToBoolConverter : ContainsConverter<bool>
 {
     public ContainsToBoolConverter()
@@ -33,18 +32,11 @@ public sealed class ContainsToBoolConverter : ContainsConverter<bool>
     }
 }
 
-[ValueConversion(typeof(object), typeof(string))]
 public sealed class ContainsToTextConverter : ContainsConverter<string?>
 {
 }
 
-[ValueConversion(typeof(object), typeof(Visibility))]
-public sealed class ContainsToVisibilityConverter : ContainsConverter<Visibility>
-{
-}
-
-[ValueConversion(typeof(object), typeof(Brush))]
-public sealed class ContainsToBrushConverter : ContainsConverter<Brush>
+public sealed class ContainsToBrushConverter : ContainsConverter<ISolidColorBrush>
 {
     public ContainsToBrushConverter()
     {
@@ -53,7 +45,6 @@ public sealed class ContainsToBrushConverter : ContainsConverter<Brush>
     }
 }
 
-[ValueConversion(typeof(object), typeof(Color))]
 public sealed class ContainsToColorConverter : ContainsConverter<Color>
 {
     public ContainsToColorConverter()
