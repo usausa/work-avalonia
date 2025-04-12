@@ -11,8 +11,17 @@ internal static class Program
     public static void Main(string[] args)
     {
         var builder = BuildControlApp();
-        //builder.StartLinuxFbDev(args, "/dev/fb0");
-        builder.StartLinuxDrm(args, "/dev/dri/card0", 1);
+        if (args.Length > 0)
+        {
+            if (args[0].StartsWith("/dev/fb", StringComparison.Ordinal))
+            {
+                builder.StartLinuxFbDev(args, args[0]);
+            }
+            else if (args[0].StartsWith("/dev/dri/card", StringComparison.Ordinal))
+            {
+                builder.StartLinuxDrm(args, args[0], 1);
+            }
+        }
     }
 
     // Avalonia configuration, don't remove; also used by visual designer.
@@ -20,6 +29,6 @@ internal static class Program
         => AppBuilder.Configure<App>()
             .UsePlatformDetect()
             .UseSkia()
-            //.WithInterFont()
+            .WithInterFont()
             .LogToTrace();
 }

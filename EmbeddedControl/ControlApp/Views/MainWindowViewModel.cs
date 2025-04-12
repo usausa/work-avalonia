@@ -11,9 +11,9 @@ using Iot.Device.BuildHat;
 
 public sealed partial class MainWindowViewModel : ViewModelBase, IDisposable
 {
-    private readonly Brick brick = new("/dev/serial0");
+    //private readonly Brick brick = new("/dev/serial0");
 
-    private readonly GamepadController controller = new();
+    //private readonly GamepadController controller = new();
 
     private readonly PeriodicTimer timer;
     private readonly CancellationTokenSource cancellationTokenSource;
@@ -34,8 +34,8 @@ public sealed partial class MainWindowViewModel : ViewModelBase, IDisposable
         cancellationTokenSource.Cancel();
         cancellationTokenSource.Dispose();
         timer.Dispose();
-        controller.Dispose();
-        brick.Dispose();
+        //controller.Dispose();
+        //brick.Dispose();
     }
 
     private async Task StartTimerAsync()
