@@ -7,7 +7,7 @@
              x:Class="ControlApp.Views.MainWindow"
              x:DataType="views:MainWindowViewModel"
              Width="800" Height="480"
-             Background="#000c18"
+             Background="#2E2F45"
              d:DesignHeight="480" d:DesignWidth="800">
 
     <Design.DataContext>
@@ -18,9 +18,28 @@
         <views:MainWindowViewModel />
     </Design.DataContext>
 
-    <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center"
-               Foreground="White"
-               FontSize="72"
-               Text="{Binding Fps}" />
+    <Grid>
+        <views:SpeedGauge Margin="0,40,0,-40"
+                          Color="Turquoise"
+                          BackgroundColor="#484D5F"
+                          Speed="{Binding Speed}" />
+
+        <TextBlock HorizontalAlignment="Right"
+                   Foreground="White"
+                   FontSize="12"
+                   Text="{Binding Fps, StringFormat={}{0} fps}" />
+
+        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+            <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center"
+                       Foreground="#878A9F"
+                       FontSize="18"
+                       Text="km/h" />
+            <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center"
+                       Foreground="White"
+                       FontSize="96"
+                       Text="{Binding Speed}"
+                       FontFamily="{StaticResource Gkktt}" />
+        </StackPanel>
+    </Grid>
 
 </UserControl>
