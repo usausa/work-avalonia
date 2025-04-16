@@ -13,4 +13,5 @@
     <Deploy />
   </Project>
   <Project Path="WorkApp/WorkApp.csproj" />
+  <Project Path="WorkBuildHat/WorkBuildHat.csproj" Id="1df4ac9a-2112-4790-bf93-15ae8b745ad8" />
 </Solution>
