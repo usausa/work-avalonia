@@ -6,10 +6,10 @@
     <File Path="Analyzers.ruleset" />
     <File Path="Directory.Build.props" />
     <File Path="Directory.Build.targets" />
-    <File Path="PlatformApp.sln.DotSettings" />
+    <File Path="PlatformEmbedded.sln.DotSettings" />
     <File Path="Settings.XamlStyler" />
   </Folder>
-  <Project Path="AvaloniaApp/AvaloniaApp.csproj">
+  <Project Path="EmbeddedApp/EmbeddedApp.csproj" >
     <Deploy />
   </Project>
 </Solution>
