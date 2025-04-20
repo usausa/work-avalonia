@@ -9,7 +9,7 @@
     <File Path="PlatformMac.sln.DotSettings" />
     <File Path="Settings.XamlStyler" />
   </Folder>
-  <Project Path="MacApp/MacApp.csproj">
+  <Project Path="PlatformApp/PlatformApp.csproj">
     <Deploy />
   </Project>
 </Solution>
