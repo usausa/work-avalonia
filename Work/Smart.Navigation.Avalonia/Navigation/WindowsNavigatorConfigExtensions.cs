@@ -1,8 +1,6 @@
 namespace Smart.Navigation;
 
-using System.Windows.Controls;
-
-using Smart.Navigation.Mappers;
+using Avalonia.Controls;
 
 public static class WindowsNavigatorConfigExtensions
 {

@@ -14,10 +14,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <AvaloniaXaml Remove="Navigation\**" />
-    <Compile Remove="Navigation\**" />
-    <EmbeddedResource Remove="Navigation\**" />
-    <None Remove="Navigation\**" />
+    <Compile Remove="Navigation\NavigationContainerBehavior.cs" />
+    <Compile Remove="Navigation\WindowsNavigationProvider.cs" />
+    <Compile Remove="Navigation\WindowsNavigatorConfigExtensions.cs" />
   </ItemGroup>
 
   <ItemGroup>

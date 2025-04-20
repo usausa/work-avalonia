@@ -1,9 +1,9 @@
 namespace Smart.Navigation;
 
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Input;
+using Avalonia.Controls;
+using Avalonia.Data;
+using Avalonia.Data.Core;
+using Avalonia.Input;
 
 public sealed class WindowsNavigationProvider : INavigationProvider
 {

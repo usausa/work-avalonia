@@ -1,6 +1,6 @@
 namespace Smart.Navigation;
 
-using System.Windows.Controls;
+using Avalonia.Controls;
 
 public interface IContainerResolver
 {

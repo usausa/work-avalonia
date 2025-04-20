@@ -1,11 +1,7 @@
 namespace Smart.Navigation;
 
-using System.Windows;
-using System.Windows.Controls;
+using Avalonia.Controls;
 
-using Microsoft.Xaml.Behaviors;
-
-[TypeConstraint(typeof(Canvas))]
 public sealed class NavigationContainerBehavior : Behavior<Canvas>
 {
     public static readonly DependencyProperty NavigatorProperty = DependencyProperty.Register(
