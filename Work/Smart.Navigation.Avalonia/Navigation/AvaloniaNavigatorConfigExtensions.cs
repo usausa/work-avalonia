@@ -2,16 +2,18 @@ namespace Smart.Navigation;
 
 using Avalonia.Controls;
 
-public static class WindowsNavigatorConfigExtensions
+using Smart.Navigation.Mappers;
+
+public static class AvaloniaNavigatorConfigExtensions
 {
     public static NavigatorConfig UseWindowsNavigationProvider(this NavigatorConfig config)
     {
         return config.UseWindowsNavigationProvider(static _ => { });
     }
 
-    public static NavigatorConfig UseWindowsNavigationProvider(this NavigatorConfig config, Action<WindowsNavigationProviderOptions> setupAction)
+    public static NavigatorConfig UseWindowsNavigationProvider(this NavigatorConfig config, Action<AvaloniaNavigationProviderOptions> setupAction)
     {
-        var options = new WindowsNavigationProviderOptions();
+        var options = new AvaloniaNavigationProviderOptions();
         setupAction(options);
 
         config.Configure(c =>
@@ -29,7 +31,7 @@ public static class WindowsNavigatorConfigExtensions
             c.Add(options);
         });
 
-        return config.UseProvider<WindowsNavigationProvider>();
+        return config.UseProvider<AvaloniaNavigationProvider>();
     }
 
     public static NavigatorConfig UseWindowsNavigationProvider(this NavigatorConfig config, Canvas container)
@@ -37,9 +39,9 @@ public static class WindowsNavigatorConfigExtensions
         return config.UseWindowsNavigationProvider(container, static _ => { });
     }
 
-    public static NavigatorConfig UseWindowsNavigationProvider(this NavigatorConfig config, Canvas container, Action<WindowsNavigationProviderOptions> setupAction)
+    public static NavigatorConfig UseWindowsNavigationProvider(this NavigatorConfig config, Canvas container, Action<AvaloniaNavigationProviderOptions> setupAction)
     {
-        var options = new WindowsNavigationProviderOptions();
+        var options = new AvaloniaNavigationProviderOptions();
         setupAction(options);
 
         config.Configure(static c =>
@@ -48,6 +50,6 @@ public static class WindowsNavigatorConfigExtensions
             c.Add<ITypeConstraint>(new AssignableTypeConstraint(typeof(Control)));
         });
 
-        return config.UseProvider(new WindowsNavigationProvider(new ContainerResolver(container), options));
+        return config.UseProvider(new AvaloniaNavigationProvider(new ContainerResolver(container), options));
     }
 }

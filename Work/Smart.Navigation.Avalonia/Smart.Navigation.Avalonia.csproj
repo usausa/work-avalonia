@@ -14,19 +14,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Navigation\NavigationContainerBehavior.cs" />
-    <Compile Remove="Navigation\WindowsNavigationProvider.cs" />
-    <Compile Remove="Navigation\WindowsNavigatorConfigExtensions.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="Avalonia" Version="11.2.6" />
     <PackageReference Include="Usa.Smart.Converter" Version="2.4.0" />
     <PackageReference Include="Usa.Smart.Core" Version="2.4.1" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\Smart.Navigation\Smart.Navigation.csproj" />
+    <PackageReference Include="Usa.Smart.Navigation" Version="2.10.0" />
   </ItemGroup>
 
 </Project>

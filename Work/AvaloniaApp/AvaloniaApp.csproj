@@ -61,8 +61,6 @@
     <ProjectReference Include="..\Smart.Avalonia.Behaviors\Smart.Avalonia.Behaviors.csproj" />
     <ProjectReference Include="..\Smart.Avalonia\Smart.Avalonia.csproj" />
     <ProjectReference Include="..\Smart.Navigation.Avalonia\Smart.Navigation.Avalonia.csproj" />
-    <ProjectReference Include="..\Smart.Navigation.Resolver\Smart.Navigation.Resolver.csproj" />
-    <ProjectReference Include="..\Smart.Navigation\Smart.Navigation.csproj" />
   </ItemGroup>
 
 </Project>
