@@ -2,7 +2,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:views="clr-namespace:AvaloniaApp.Views"
+        xmlns:models="clr-namespace:AvaloniaApp.Models" xmlns:views="clr-namespace:AvaloniaApp.Views"
         mc:Ignorable="d"
         x:Class="AvaloniaApp.Views.MainWindow"
         x:DataType="views:MainWindowViewModel"
@@ -22,7 +22,8 @@
         <Button Click="SetButtonOnClick" Content="On" />
         <Button Click="ClearButtonOnClick" Content="Clear" />
         <Canvas Width="100" Height="100"
-                Background="AliceBlue" />
+                Background="AliceBlue"
+                models:NavigationContainerBehavior.Navigator="{Binding Navigator}" />
     </StackPanel>
 
 </Window>
