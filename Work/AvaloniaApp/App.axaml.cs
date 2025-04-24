@@ -16,6 +16,8 @@ using Microsoft.Extensions.Logging;
 
 using Serilog;
 
+using Smart.Avalonia.Resolver;
+
 // ReSharper disable once PartialTypeWithSinglePart
 public partial class App : Application
 {
@@ -26,8 +28,7 @@ public partial class App : Application
         AvaloniaXamlLoader.Load(this);
 
         host = CreateHost();
-        // TODO
-        //ResolveProvider.Default.Provider = host.Services;
+        ResolveProvider.Default.Provider = host.Services;
     }
 
     // ReSharper disable once AsyncVoidMethod
