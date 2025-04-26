@@ -1,9 +1,9 @@
 namespace Smart.Avalonia.Data;
 
 using System.Globalization;
-using System.Windows.Data;
 
-[ValueConversion(typeof(object), typeof(object))]
+using global::Avalonia.Data.Converters;
+
 public sealed class ParameterEqualsConverter : IValueConverter
 {
     public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
@@ -13,6 +13,6 @@ public sealed class ParameterEqualsConverter : IValueConverter
 
     public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
-        return Equals(value, true) ? parameter : Binding.DoNothing;
+        return Equals(value, true) ? parameter : null;
     }
 }

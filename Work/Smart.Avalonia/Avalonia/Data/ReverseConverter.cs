@@ -1,9 +1,9 @@
 namespace Smart.Avalonia.Data;
 
 using System.Globalization;
-using System.Windows.Data;
 
-[ValueConversion(typeof(bool), typeof(bool))]
+using global::Avalonia.Data.Converters;
+
 public sealed class ReverseConverter : IValueConverter
 {
     public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)

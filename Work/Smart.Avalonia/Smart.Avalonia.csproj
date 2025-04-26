@@ -27,10 +27,18 @@
   <ItemGroup>
     <Compile Include="Avalonia\Data\AllConverter.cs" />
     <Compile Include="Avalonia\Data\AnyConverter.cs" />
+    <Compile Include="Avalonia\Data\ArrayIndexConverter.cs" />
     <Compile Include="Avalonia\Data\BinaryConverter.cs" />
+    <Compile Include="Avalonia\Data\BoolToObjectConverter.cs" />
     <Compile Include="Avalonia\Data\ChainConverter.cs" />
+    <Compile Include="Avalonia\Data\ColorBlendConverter.cs" />
+    <Compile Include="Avalonia\Data\CompareConverter.cs" />
     <Compile Include="Avalonia\Data\ContainsConverter.cs" />
     <Compile Include="Avalonia\Data\ObjectConvertConverter.cs" />
+    <Compile Include="Avalonia\Data\ObjectToBoolConverter.cs" />
+    <Compile Include="Avalonia\Data\ParameterEqualsConverter.cs" />
+    <Compile Include="Avalonia\Data\ReverseConverter.cs" />
+    <Compile Include="Avalonia\Data\TextReplaceConverter.cs" />
     <Compile Include="Avalonia\Data\ToLowerConverter.cs" />
     <Compile Include="Avalonia\Data\ToUpperConverter.cs" />
     <Compile Include="Avalonia\Expressions\BinaryExpressions.cs" />

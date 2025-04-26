@@ -2,10 +2,10 @@ namespace Smart.Avalonia.Data;
 
 using System.Globalization;
 using System.Text.RegularExpressions;
-using System.Windows.Data;
+
+using global::Avalonia.Data.Converters;
 
 #pragma warning disable IDE0032
-[ValueConversion(typeof(string), typeof(string))]
 public sealed class TextReplaceConverter : IValueConverter
 {
     private string pattern = string.Empty;

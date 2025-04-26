@@ -1,7 +1,8 @@
 namespace Smart.Avalonia.Data;
 
 using System.Globalization;
-using System.Windows.Data;
+
+using global::Avalonia.Data.Converters;
 
 public abstract class ObjectToBoolConverter<T> : IValueConverter
 {
@@ -20,12 +21,10 @@ public abstract class ObjectToBoolConverter<T> : IValueConverter
     }
 }
 
-[ValueConversion(typeof(string), typeof(bool))]
 public sealed class TextToBoolConverter : ObjectToBoolConverter<string?>
 {
 }
 
-[ValueConversion(typeof(int), typeof(bool))]
 public sealed class IntToBoolConverter : ObjectToBoolConverter<int>
 {
 }

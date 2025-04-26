@@ -1,12 +1,11 @@
 namespace Smart.Avalonia.Data;
 
 using System.Globalization;
-using System.Windows;
-using System.Windows.Data;
-using System.Windows.Media;
+
+using global::Avalonia.Data.Converters;
+using global::Avalonia.Media;
 
 #pragma warning disable IDE0032
-[ValueConversion(typeof(Color), typeof(Color))]
 public sealed class ColorBlendConverter : IValueConverter
 {
     private double raito;
@@ -31,7 +30,7 @@ public sealed class ColorBlendConverter : IValueConverter
     {
         if (value is not Color color)
         {
-            return DependencyProperty.UnsetValue;
+            return null;
         }
 
         var r = Math.Min((byte)Math.Round(color.R + ((Color.R - color.R) * raito)), (byte)255);

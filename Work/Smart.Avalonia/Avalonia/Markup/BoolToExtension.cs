@@ -31,9 +31,9 @@ public sealed class BoolToVisibilityExtension : MarkupExtension
 [MarkupExtensionReturnType(typeof(BoolToBrushExtension))]
 public sealed class BoolToBrushExtension : MarkupExtension
 {
-    public Brush True { get; set; } = Brushes.Transparent;
+    public IBrush True { get; set; } = Brushes.Transparent;
 
-    public Brush False { get; set; } = Brushes.Transparent;
+    public IBrush False { get; set; } = Brushes.Transparent;
 
     public override object ProvideValue(IServiceProvider serviceProvider) =>
         new BoolToBrushConverter { TrueValue = True, FalseValue = False };

@@ -1,9 +1,9 @@
 namespace Smart.Avalonia.Data;
 
 using System.Globalization;
-using System.Windows;
-using System.Windows.Data;
-using System.Windows.Media;
+
+using global::Avalonia.Data.Converters;
+using global::Avalonia.Media;
 
 using Smart.Avalonia.Expressions;
 
@@ -26,7 +26,6 @@ public abstract class CompareConverter<T> : IValueConverter
     }
 }
 
-[ValueConversion(typeof(object), typeof(bool))]
 public sealed class CompareToBoolConverter : CompareConverter<bool>
 {
     public CompareToBoolConverter()
@@ -36,18 +35,11 @@ public sealed class CompareToBoolConverter : CompareConverter<bool>
     }
 }
 
-[ValueConversion(typeof(object), typeof(string))]
 public sealed class CompareToTextConverter : CompareConverter<string?>
 {
 }
 
-[ValueConversion(typeof(object), typeof(Visibility))]
-public sealed class CompareToVisibilityConverter : CompareConverter<Visibility>
-{
-}
-
-[ValueConversion(typeof(object), typeof(Brush))]
-public sealed class CompareToBrushConverter : CompareConverter<Brush>
+public sealed class CompareToBrushConverter : CompareConverter<IBrush>
 {
     public CompareToBrushConverter()
     {
@@ -56,7 +48,6 @@ public sealed class CompareToBrushConverter : CompareConverter<Brush>
     }
 }
 
-[ValueConversion(typeof(object), typeof(Color))]
 public sealed class CompareToColorConverter : CompareConverter<Color>
 {
     public CompareToColorConverter()

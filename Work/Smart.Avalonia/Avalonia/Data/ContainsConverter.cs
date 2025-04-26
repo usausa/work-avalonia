@@ -36,7 +36,7 @@ public sealed class ContainsToTextConverter : ContainsConverter<string?>
 {
 }
 
-public sealed class ContainsToBrushConverter : ContainsConverter<ISolidColorBrush>
+public sealed class ContainsToBrushConverter : ContainsConverter<IBrush>
 {
     public ContainsToBrushConverter()
     {

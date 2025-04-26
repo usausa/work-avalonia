@@ -1,9 +1,9 @@
 namespace Smart.Avalonia.Data;
 
 using System.Globalization;
-using System.Windows.Data;
 
-[ValueConversion(typeof(int), typeof(object))]
+using global::Avalonia.Data.Converters;
+
 public sealed class ArrayIndexConverter : IValueConverter
 {
     public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
