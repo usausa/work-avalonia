@@ -1,12 +1,10 @@
 namespace Smart.Avalonia.Markup;
 
-using System.Windows;
-using System.Windows.Markup;
-using System.Windows.Media;
+using global::Avalonia.Markup.Xaml;
+using global::Avalonia.Media;
 
 using Smart.Avalonia.Data;
 
-[MarkupExtensionReturnType(typeof(NullToBoolConverter))]
 public sealed class NullToBoolExtension : MarkupExtension
 {
     public bool Invert { get; set; }
@@ -17,7 +15,6 @@ public sealed class NullToBoolExtension : MarkupExtension
         new NullToBoolConverter { NullValue = !Invert, NonNullValue = Invert, HandleEmptyString = HandleEmptyString };
 }
 
-[MarkupExtensionReturnType(typeof(NullToTextConverter))]
 public sealed class NullToTextExtension : MarkupExtension
 {
     public string? Null { get; set; }
@@ -30,25 +27,11 @@ public sealed class NullToTextExtension : MarkupExtension
         new NullToTextConverter { NullValue = Null, NonNullValue = NonNull, HandleEmptyString = HandleEmptyString };
 }
 
-[MarkupExtensionReturnType(typeof(NullToVisibilityConverter))]
-public sealed class NullToVisibilityExtension : MarkupExtension
-{
-    public Visibility Null { get; set; }
-
-    public Visibility NonNull { get; set; }
-
-    public bool HandleEmptyString { get; set; }
-
-    public override object ProvideValue(IServiceProvider serviceProvider) =>
-        new NullToVisibilityConverter { NullValue = Null, NonNullValue = NonNull, HandleEmptyString = HandleEmptyString };
-}
-
-[MarkupExtensionReturnType(typeof(NullToBrushConverter))]
 public sealed class NullToBrushExtension : MarkupExtension
 {
-    public Brush Null { get; set; } = Brushes.Transparent;
+    public IBrush Null { get; set; } = Brushes.Transparent;
 
-    public Brush NonNull { get; set; } = Brushes.Transparent;
+    public IBrush NonNull { get; set; } = Brushes.Transparent;
 
     public bool HandleEmptyString { get; set; }
 
@@ -56,7 +39,6 @@ public sealed class NullToBrushExtension : MarkupExtension
         new NullToBrushConverter { NullValue = Null, NonNullValue = NonNull, HandleEmptyString = HandleEmptyString };
 }
 
-[MarkupExtensionReturnType(typeof(NullToColorConverter))]
 public sealed class NullToColorExtension : MarkupExtension
 {
     public Color Null { get; set; } = Colors.Transparent;

@@ -1,12 +1,10 @@
 namespace Smart.Avalonia.Markup;
 
-using System.Windows;
-using System.Windows.Markup;
-using System.Windows.Media;
-
 using Smart.Avalonia.Data;
 
-[MarkupExtensionReturnType(typeof(BoolToColorConverter))]
+using global::Avalonia.Markup.Xaml;
+using global::Avalonia.Media;
+
 public sealed class BoolToTextExtension : MarkupExtension
 {
     public string? True { get; set; }
@@ -17,18 +15,6 @@ public sealed class BoolToTextExtension : MarkupExtension
         new BoolToTextConverter { TrueValue = True, FalseValue = False };
 }
 
-[MarkupExtensionReturnType(typeof(BoolToVisibilityExtension))]
-public sealed class BoolToVisibilityExtension : MarkupExtension
-{
-    public Visibility True { get; set; }
-
-    public Visibility False { get; set; }
-
-    public override object ProvideValue(IServiceProvider serviceProvider) =>
-        new BoolToVisibilityConverter { TrueValue = True, FalseValue = False };
-}
-
-[MarkupExtensionReturnType(typeof(BoolToBrushExtension))]
 public sealed class BoolToBrushExtension : MarkupExtension
 {
     public IBrush True { get; set; } = Brushes.Transparent;
@@ -39,7 +25,6 @@ public sealed class BoolToBrushExtension : MarkupExtension
         new BoolToBrushConverter { TrueValue = True, FalseValue = False };
 }
 
-[MarkupExtensionReturnType(typeof(BoolToColorConverter))]
 public sealed class BoolToColorExtension : MarkupExtension
 {
     public Color True { get; set; } = Colors.Transparent;

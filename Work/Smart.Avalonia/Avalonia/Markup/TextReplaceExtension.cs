@@ -1,11 +1,11 @@
 namespace Smart.Avalonia.Markup;
 
 using System.Text.RegularExpressions;
-using System.Windows.Markup;
+
+using global::Avalonia.Markup.Xaml;
 
 using Smart.Avalonia.Data;
 
-[MarkupExtensionReturnType(typeof(TextReplaceConverter))]
 public sealed class TextReplaceExtension : MarkupExtension
 {
     public string Pattern { get; set; } = string.Empty;

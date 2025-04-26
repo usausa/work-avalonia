@@ -31,6 +31,15 @@ public sealed class BoolToTextConverter : BoolToObjectConverter<string?>
 {
 }
 
+public sealed class BoolToBrushConverter : BoolToObjectConverter<IBrush>
+{
+    public BoolToBrushConverter()
+    {
+        TrueValue = Brushes.Transparent;
+        FalseValue = Brushes.Transparent;
+    }
+}
+
 public sealed class BoolToColorConverter : BoolToObjectConverter<Color>
 {
     public BoolToColorConverter()

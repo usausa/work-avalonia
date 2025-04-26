@@ -1,11 +1,10 @@
 namespace Smart.Avalonia.Markup;
 
-using System.Windows.Markup;
-using System.Windows.Media;
+using global::Avalonia.Markup.Xaml;
+using global::Avalonia.Media;
 
 using Smart.Avalonia.Data;
 
-[MarkupExtensionReturnType(typeof(ColorBlendConverter))]
 public sealed class ColorBlendExtension : MarkupExtension
 {
     public Color Color { get; set; }

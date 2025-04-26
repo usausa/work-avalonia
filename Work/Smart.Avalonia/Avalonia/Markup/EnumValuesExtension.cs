@@ -1,10 +1,7 @@
 namespace Smart.Avalonia.Markup;
 
-using System.Collections;
-using System.Windows.Markup;
+using global::Avalonia.Markup.Xaml;
 
-[ContentProperty("Type")]
-[MarkupExtensionReturnType(typeof(IEnumerable))]
 public sealed class EnumValuesExtension : MarkupExtension
 {
     public Type Type { get; set; }

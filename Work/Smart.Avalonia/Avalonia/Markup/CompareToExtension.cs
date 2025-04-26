@@ -1,13 +1,11 @@
 namespace Smart.Avalonia.Markup;
 
-using System.Windows;
-using System.Windows.Markup;
-using System.Windows.Media;
+using global::Avalonia.Markup.Xaml;
+using global::Avalonia.Media;
 
 using Smart.Avalonia.Data;
 using Smart.Avalonia.Expressions;
 
-[MarkupExtensionReturnType(typeof(CompareToBoolConverter))]
 public sealed class CompareToBoolExtension : MarkupExtension
 {
     public ICompareExpression? Expression { get; set; }
@@ -16,7 +14,6 @@ public sealed class CompareToBoolExtension : MarkupExtension
         new CompareToBoolConverter { Expression = Expression ?? CompareExpressions.Equal, TrueValue = true, FalseValue = false };
 }
 
-[MarkupExtensionReturnType(typeof(CompareToTextConverter))]
 public sealed class CompareToTextExtension : MarkupExtension
 {
     public ICompareExpression? Expression { get; set; }
@@ -29,33 +26,18 @@ public sealed class CompareToTextExtension : MarkupExtension
         new CompareToTextConverter { Expression = Expression ?? CompareExpressions.Equal, TrueValue = True, FalseValue = False };
 }
 
-[MarkupExtensionReturnType(typeof(CompareToVisibilityConverter))]
-public sealed class CompareToVisibilityExtension : MarkupExtension
-{
-    public ICompareExpression? Expression { get; set; }
-
-    public Visibility True { get; set; }
-
-    public Visibility False { get; set; }
-
-    public override object ProvideValue(IServiceProvider serviceProvider) =>
-        new CompareToVisibilityConverter { Expression = Expression ?? CompareExpressions.Equal, TrueValue = True, FalseValue = False };
-}
-
-[MarkupExtensionReturnType(typeof(CompareToBrushConverter))]
 public sealed class CompareToBrushExtension : MarkupExtension
 {
     public ICompareExpression? Expression { get; set; }
 
-    public Brush True { get; set; } = Brushes.Transparent;
+    public IBrush True { get; set; } = Brushes.Transparent;
 
-    public Brush False { get; set; } = Brushes.Transparent;
+    public IBrush False { get; set; } = Brushes.Transparent;
 
     public override object ProvideValue(IServiceProvider serviceProvider) =>
         new CompareToBrushConverter { Expression = Expression ?? CompareExpressions.Equal, TrueValue = True, FalseValue = False };
 }
 
-[MarkupExtensionReturnType(typeof(CompareToColorConverter))]
 public sealed class CompareToColorExtension : MarkupExtension
 {
     public ICompareExpression? Expression { get; set; }
