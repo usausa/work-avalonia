@@ -1,9 +1,9 @@
 namespace Smart.Avalonia.Data;
 
 using System.Globalization;
-using System.Windows;
-using System.Windows.Data;
-using System.Windows.Media;
+
+using global::Avalonia.Data.Converters;
+using global::Avalonia.Media;
 
 public abstract class NullToObjectConverter<T> : IValueConverter
 {
@@ -30,7 +30,6 @@ public abstract class NullToObjectConverter<T> : IValueConverter
     }
 }
 
-[ValueConversion(typeof(object), typeof(bool))]
 public sealed class NullToBoolConverter : NullToObjectConverter<bool>
 {
     public NullToBoolConverter()
@@ -40,18 +39,11 @@ public sealed class NullToBoolConverter : NullToObjectConverter<bool>
     }
 }
 
-[ValueConversion(typeof(object), typeof(string))]
 public sealed class NullToTextConverter : NullToObjectConverter<string?>
 {
 }
 
-[ValueConversion(typeof(object), typeof(Visibility))]
-public sealed class NullToVisibilityConverter : NullToObjectConverter<Visibility>
-{
-}
-
-[ValueConversion(typeof(object), typeof(Brush))]
-public sealed class NullToBrushConverter : NullToObjectConverter<Brush>
+public sealed class NullToBrushConverter : NullToObjectConverter<IBrush>
 {
     public NullToBrushConverter()
     {
@@ -60,7 +52,6 @@ public sealed class NullToBrushConverter : NullToObjectConverter<Brush>
     }
 }
 
-[ValueConversion(typeof(object), typeof(Color))]
 public sealed class NullToColorConverter : NullToObjectConverter<Color>
 {
     public NullToColorConverter()

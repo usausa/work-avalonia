@@ -34,6 +34,11 @@
     <Compile Include="Avalonia\Data\ColorBlendConverter.cs" />
     <Compile Include="Avalonia\Data\CompareConverter.cs" />
     <Compile Include="Avalonia\Data\ContainsConverter.cs" />
+    <Compile Include="Avalonia\Data\EnumDescriptionConverter.cs" />
+    <Compile Include="Avalonia\Data\MapToObjectConverter.cs" />
+    <Compile Include="Avalonia\Data\MultiBinaryConverter.cs" />
+    <Compile Include="Avalonia\Data\NullToObjectConverter.cs" />
+    <Compile Include="Avalonia\Data\NullToParameterConverter.cs" />
     <Compile Include="Avalonia\Data\ObjectConvertConverter.cs" />
     <Compile Include="Avalonia\Data\ObjectToBoolConverter.cs" />
     <Compile Include="Avalonia\Data\ParameterEqualsConverter.cs" />

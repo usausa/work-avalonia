@@ -1,9 +1,9 @@
 namespace Smart.Avalonia.Data;
 
 using System.Globalization;
-using System.Windows.Data;
 
-[ValueConversion(typeof(object), typeof(object))]
+using global::Avalonia.Data.Converters;
+
 public sealed class NullToParameterConverter : IValueConverter
 {
     public bool Invert { get; set; }

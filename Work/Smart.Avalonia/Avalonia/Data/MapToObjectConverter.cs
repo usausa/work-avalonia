@@ -2,8 +2,9 @@ namespace Smart.Avalonia.Data;
 
 using System.Collections.ObjectModel;
 using System.Globalization;
-using System.Windows.Data;
-using System.Windows.Media;
+
+using global::Avalonia.Data.Converters;
+using global::Avalonia.Media;
 
 public abstract class MapEntry<T>
 {
@@ -49,12 +50,11 @@ public abstract class MapToObjectConverter<T> : IValueConverter
     }
 }
 
-public sealed class MapToBrushEntry : MapEntry<Brush>
+public sealed class MapToBrushEntry : MapEntry<IBrush>
 {
 }
 
-[ValueConversion(typeof(object), typeof(Brush))]
-public sealed class MapToBrushConverter : MapToObjectConverter<Brush>
+public sealed class MapToBrushConverter : MapToObjectConverter<IBrush>
 {
     public MapToBrushConverter()
     {
@@ -66,7 +66,6 @@ public sealed class MapToTextEntry : MapEntry<string?>
 {
 }
 
-[ValueConversion(typeof(object), typeof(string))]
 public sealed class MapToTextConverter : MapToObjectConverter<string?>
 {
 }
@@ -75,7 +74,6 @@ public sealed class MapToColorEntry : MapEntry<Color>
 {
 }
 
-[ValueConversion(typeof(object), typeof(Color))]
 public sealed class MapToColorConverter : MapToObjectConverter<Color>
 {
     public MapToColorConverter()
