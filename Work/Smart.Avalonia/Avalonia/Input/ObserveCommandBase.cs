@@ -3,7 +3,6 @@ namespace Smart.Avalonia.Input;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using System.Windows.Input;
 
 public abstract class ObserveCommandBase<T>
     where T : ObserveCommandBase<T>
@@ -14,27 +13,13 @@ public abstract class ObserveCommandBase<T>
 
     private HashSet<INotifyCollectionChanged>? observeCollections;
 
-    private EventHandler? canExecuteChanged;
-
-    public event EventHandler? CanExecuteChanged
-    {
-        add
-        {
-            canExecuteChanged += value;
-            CommandManager.RequerySuggested += value;
-        }
-        remove
-        {
-            canExecuteChanged -= value;
-            CommandManager.RequerySuggested -= value;
-        }
-    }
+    public event EventHandler? CanExecuteChanged;
 
 #pragma warning disable CA1030
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public void RaiseCanExecuteChanged()
     {
-        canExecuteChanged?.Invoke(this, EventArgs.Empty);
+        CanExecuteChanged?.Invoke(this, EventArgs.Empty);
     }
 #pragma warning restore CA1030
 

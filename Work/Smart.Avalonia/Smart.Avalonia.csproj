@@ -50,6 +50,10 @@
     <Compile Include="Avalonia\Expressions\CompareExpressions.cs" />
     <Compile Include="Avalonia\Expressions\IBinaryExpression.cs" />
     <Compile Include="Avalonia\Expressions\ICompareExpression.cs" />
+    <Compile Include="Avalonia\Input\AsyncCommand.cs" />
+    <Compile Include="Avalonia\Input\DelegateCommand.cs" />
+    <Compile Include="Avalonia\Input\ObserveCommandBase.cs" />
+    <Compile Include="Avalonia\Input\ObserverCommandExtensions.cs" />
     <Compile Include="Avalonia\Internal\ConvertHelper.cs" />
     <Compile Include="Avalonia\Internal\Functions.cs" />
     <Compile Include="Avalonia\Internal\ListDisposable.cs" />
@@ -83,6 +87,7 @@
     <Compile Include="Avalonia\ViewModels\BusyState.cs" />
     <Compile Include="Avalonia\ViewModels\BusyStateExtensions.cs" />
     <Compile Include="Avalonia\ViewModels\IBusyState.cs" />
+    <Compile Include="Avalonia\ViewModels\ViewModelBase.cs" />
   </ItemGroup>
 
   <ItemGroup>
