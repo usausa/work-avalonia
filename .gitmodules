@@ -1,0 +1,6 @@
+[submodule "Work/Smart/Avalonia"]
+	path = Work/Smart/Avalonia
+	url = https://github.com/usausa/Smart-Net-Avalonia.git
+[submodule "Work/Smart/Navigation"]
+	path = Work/Smart/Navigation
+	url = https://github.com/usausa/Smart-Net-Navigation.git
