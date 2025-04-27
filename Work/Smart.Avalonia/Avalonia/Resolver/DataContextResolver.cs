@@ -1,57 +1,40 @@
 namespace Smart.Avalonia.Resolver;
 
-using System.ComponentModel;
-using System.Windows;
+using global::Avalonia;
+using global::Avalonia.Controls;
 
 public static class DataContextResolver
 {
-    public static readonly DependencyProperty TypeProperty = DependencyProperty.RegisterAttached(
-        "Type",
-        typeof(Type),
-        typeof(DataContextResolver),
-        new PropertyMetadata(HandleTypePropertyChanged));
+    public static readonly AttachedProperty<Type> TypeProperty =
+        AvaloniaProperty.RegisterAttached<Control, Type>("Type", typeof(DataContextResolver));
 
-    public static readonly DependencyProperty DisposeOnChangedProperty = DependencyProperty.RegisterAttached(
-        "DisposeOnChanged",
-        typeof(bool),
-        typeof(DataContextResolver),
-        new PropertyMetadata(true));
+    public static readonly AttachedProperty<bool> DisposeOnChangedProperty =
+        AvaloniaProperty.RegisterAttached<Control, bool>("DisposeOnChanged", typeof(DataContextResolver));
 
-    public static Type GetType(DependencyObject obj)
+    public static Type GetType(Control control) =>
+        control.GetValue(TypeProperty);
+
+    public static void SetType(Control control, Type value) =>
+        control.SetValue(TypeProperty, value);
+
+    public static bool GetDisposeOnChanged(Control control) =>
+        control.GetValue(DisposeOnChangedProperty);
+
+    public static void SetDisposeOnChanged(Control control, bool value) =>
+        control.SetValue(DisposeOnChangedProperty, value);
+
+    static DataContextResolver()
     {
-        return (Type)obj.GetValue(TypeProperty);
+        TypeProperty.Changed.AddClassHandler<Control>(HandleTypePropertyChanged);
     }
 
-    public static void SetType(DependencyObject obj, Type value)
+    private static void HandleTypePropertyChanged(Control control, AvaloniaPropertyChangedEventArgs e)
     {
-        obj.SetValue(TypeProperty, value);
-    }
-
-    public static bool GetDisposeOnChanged(DependencyObject obj)
-    {
-        return (bool)obj.GetValue(DisposeOnChangedProperty);
-    }
-
-    public static void SetDisposeOnChanged(DependencyObject obj, bool value)
-    {
-        obj.SetValue(DisposeOnChangedProperty, value);
-    }
-
-    private static void HandleTypePropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-    {
-        if (DesignerProperties.GetIsInDesignMode(d))
+        if (control.DataContext is IDisposable disposable && GetDisposeOnChanged(control))
         {
-            return;
+            disposable.Dispose();
         }
 
-        if (d is FrameworkElement element)
-        {
-            if (element.DataContext is IDisposable disposable && GetDisposeOnChanged(d))
-            {
-                disposable.Dispose();
-            }
-
-            element.DataContext = e.NewValue is not null ? ResolveProvider.Default.GetService((Type)e.NewValue) : null;
-        }
+        control.DataContext = e.NewValue is not null ? ResolveProvider.Default.GetService((Type)e.NewValue) : null;
     }
 }

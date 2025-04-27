@@ -81,6 +81,7 @@
     <Compile Include="Avalonia\Messaging\ParameterEventArgs.cs" />
     <Compile Include="Avalonia\Messaging\ResolveRequest.cs" />
     <Compile Include="Avalonia\Messaging\ResultEventArgs.cs" />
+    <Compile Include="Avalonia\Resolver\DataContextResolver.cs" />
     <Compile Include="Avalonia\Resolver\DefaultResolveProvider.cs" />
     <Compile Include="Avalonia\Resolver\ResolveExtension.cs" />
     <Compile Include="Avalonia\Resolver\ResolveProvider.cs" />
