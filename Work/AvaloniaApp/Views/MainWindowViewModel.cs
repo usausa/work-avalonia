@@ -1,8 +1,10 @@
 namespace AvaloniaApp.Views;
 
+using CommunityToolkit.Mvvm.ComponentModel;
+
 using Smart.Navigation;
 
-public class MainWindowViewModel : ViewModelBase
+public class MainWindowViewModel : ObservableObject
 {
     public Navigator Navigator { get; set; }
 
