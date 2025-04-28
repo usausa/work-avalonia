@@ -2,17 +2,12 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:sr="clr-namespace:Smart.Avalonia.Resolver;assembly=Smart.Avalonia"
              xmlns:views="clr-namespace:AvaloniaApp.Views"
              mc:Ignorable="d"
-             x:Class="AvaloniaApp.Views.MainPage"
-             x:DataType="views:MainPageViewModel"
-             d:DesignWidth="1680" d:DesignHeight="1050">
-
-    <UserControl.DataContext>
-        <views:MainPageViewModel />
-    </UserControl.DataContext>
-
-    <TextBlock Text="{Binding Greeting}"
-               HorizontalAlignment="Center" VerticalAlignment="Center" />
-
+             x:Class="AvaloniaApp.Views.MenuView"
+             x:DataType="{x:Type views:MenuViewModel}"
+             sr:DataContextResolver.Type="views:MenuViewModel"
+             d:DesignWidth="800" d:DesignHeight="450">
+    <Label Content="{Binding Message}" />
 </UserControl>

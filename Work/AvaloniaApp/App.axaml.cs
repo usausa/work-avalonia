@@ -60,6 +60,9 @@ public partial class App : Application
             log.InfoStartupSettingsThreadPool(workerThreads, completionPortThreads);
             log.InfoStartupApplication(environment.ApplicationName, typeof(App).Assembly.GetName().Version);
             log.InfoStartupEnvironment(environment.EnvironmentName, environment.ContentRootPath);
+
+            var navigator = host.Services.GetRequiredService<Navigator>();
+            await navigator.ForwardAsync(ViewId.Menu);
         }
 
         base.OnFrameworkInitializationCompleted();
@@ -94,9 +97,36 @@ public partial class App : Application
         builder.Services.Configure<Setting>(builder.Configuration.GetSection("Setting"));
 
         // View
-        builder.Services.AddSingleton<MainWindow>();
-
         // TODO
+        builder.Services.AddSingleton<MainWindow>();
+        builder.Services.AddTransient<MainWindowViewModel>();
+        builder.Services.AddTransient<MenuView>();
+        builder.Services.AddTransient<MenuViewModel>();
+        builder.Services.AddTransient<SubView>();
+        builder.Services.AddTransient<SubViewModel>();
+
+        // Navigator
+        builder.Services.AddSingleton<Navigator>(p =>
+        {
+            var navigator = new NavigatorConfig()
+                .UseAvaloniaNavigationProvider()
+                .UseServiceProvider(p)
+                .UseIdViewMapper(static m =>
+                {
+                    // TODO
+                    m.Register(ViewId.Menu, typeof(MenuView));
+                    m.Register(ViewId.Sub, typeof(SubView));
+                })
+                .ToNavigator();
+            navigator.Navigated += (_, args) =>
+            {
+                // for debug
+                System.Diagnostics.Debug.WriteLine(
+                    $"Navigated: [{args.Context.FromId}]->[{args.Context.ToId}] : stacked=[{navigator.StackedCount}]");
+            };
+
+            return navigator;
+        });
 
         return builder.Build();
     }
