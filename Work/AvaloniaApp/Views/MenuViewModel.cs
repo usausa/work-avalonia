@@ -1,11 +1,8 @@
 namespace AvaloniaApp.Views;
 
-using CommunityToolkit.Mvvm.ComponentModel;
-
-public sealed partial class MenuViewModel : ViewModelBase
+public sealed class MenuViewModel : ViewModelBase
 {
-    [ObservableProperty]
-    public partial string Message { get; set; }
+    public string Message { get; set; }
 
     public MenuViewModel()
     {
