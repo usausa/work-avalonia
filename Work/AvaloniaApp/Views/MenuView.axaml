@@ -51,5 +51,7 @@
                 Content="Cancel" />
         <Button Command="{Binding Test7Command}"
                 Content="Flip" />
+        <Button Command="{Binding Test8Command}"
+                Content="Navigate" />
     </StackPanel>
 </UserControl>

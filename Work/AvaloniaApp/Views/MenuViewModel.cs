@@ -44,6 +44,8 @@ public sealed partial class MenuViewModel : ViewModelBase
 
     public ICommand Test7Command { get; }
 
+    public ICommand Test8Command { get; }
+
     public MenuViewModel()
     {
         Message = "Hello from MenuViewModel!";
@@ -76,6 +78,10 @@ public sealed partial class MenuViewModel : ViewModelBase
         Test7Command = new DelegateCommand(() =>
         {
             State = !State;
+        });
+        Test8Command = new DelegateCommand(() =>
+        {
+            Navigator.Forward(ViewId.Sub);
         });
     }
 }
