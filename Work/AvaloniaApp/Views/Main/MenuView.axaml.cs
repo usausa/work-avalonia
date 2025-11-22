@@ -1,4 +1,4 @@
-namespace AvaloniaApp.Views;
+namespace AvaloniaApp.Views.Main;
 
 using Avalonia.Controls;
 

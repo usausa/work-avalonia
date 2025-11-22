@@ -1,0 +1,61 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:s="http://smart/avalonia"
+             xmlns:local="clr-namespace:AvaloniaApp.Views.Main"
+             mc:Ignorable="d"
+             x:Class="AvaloniaApp.Views.Main.MenuView"
+             x:DataType="local:MenuViewModel"
+             s:DataContextResolver.Type="local:MenuViewModel"
+             d:DesignWidth="1920" d:DesignHeight="1080">
+
+    <UserControl.Styles>
+        <Style Selector="Button.action">
+            <Setter Property="Background" Value="#0078D7"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderBrush" Value="#005A9E"/>
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="FontSize" Value="36"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+        </Style>
+    </UserControl.Styles>
+
+    <Grid RowDefinitions="3*,1*">
+        <Label Name="BarcodeLabel"
+               Grid.Row="0"
+               Content="{Binding Barcode}"
+               HorizontalAlignment="Center"
+               VerticalAlignment="Center"
+               FontSize="144"
+               FontWeight="Bold"/>
+
+        <Grid Grid.Row="1" ColumnDefinitions="*,*">
+            <Button Grid.Column="0"
+                    Classes="action"
+                    Command="{Binding StartCommand}"
+                    Content="START"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Width="240"
+                    Height="80"/>
+            <Button Grid.Column="1"
+                    Classes="action"
+                    Command="{Binding StopCommand}"
+                    Content="STOP"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Width="240"
+                    Height="80"/>
+        </Grid>
+
+        <Label Grid.Row="1" Content="Powered by Linux / Avalonia"
+               HorizontalAlignment="Right"
+               VerticalAlignment="Bottom"
+               Margin="12"
+               FontSize="24"
+               Opacity="0.8"/>
+    </Grid>
+
+</UserControl>

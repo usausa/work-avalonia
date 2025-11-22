@@ -26,8 +26,12 @@ global using System.Windows.Input;
 global using Microsoft.Extensions.Logging;
 
 global using Smart;
+global using Smart.Avalonia.Messaging;
+global using Smart.Avalonia.ViewModels;
 global using Smart.Collections.Generic;
 global using Smart.ComponentModel;
+global using Smart.Mvvm;
+global using Smart.Mvvm.Messaging;
 global using Smart.Navigation;
 global using Smart.Navigation.Attributes;
 global using Smart.Navigation.Plugins.Parameter;

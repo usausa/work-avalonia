@@ -1,0 +1,20 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:s="http://smart/avalonia"
+        xmlns:navigation="http://smart/navigation"
+        xmlns:app="using:AvaloniaApp"
+        mc:Ignorable="d"
+        x:Class="AvaloniaApp.MainWindow"
+        x:DataType="app:MainWindowViewModel"
+        s:DataContextResolver.Type="app:MainWindowViewModel"
+        Width="1920" Height="1080"
+        d:DesignWidth="1920" d:DesignHeight="1080"
+        CanResize="False"
+        Title="AvaloniaApp"
+        Icon="/Assets/avalonia-logo.ico">
+
+    <Canvas navigation:NavigationContainer.Navigator="{Binding Navigator}" />
+
+</Window>

@@ -2,5 +2,5 @@ namespace AvaloniaApp.Settings;
 
 public class Setting
 {
-    public string Value { get; set; } = default!;
+    public string QrPort { get; set; } = default!;
 }

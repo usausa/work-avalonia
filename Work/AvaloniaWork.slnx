@@ -1,11 +1,7 @@
 <Solution>
   <Folder Name="/Library/">
+    <Project Path="Smart/Avalonia/Smart.Avalonia.Extensions/Smart.Avalonia.Extensions.csproj" />
     <Project Path="Smart/Avalonia/Smart.Avalonia/Smart.Avalonia.csproj" />
-    <Project Path="Smart/Avalonia/Smart.Avalonia.Behaviors/Smart.Avalonia.Behaviors.csproj" />
-    <Project Path="Smart/Avalonia/Smart.Avalonia.Reactive/Smart.Avalonia.Reactive.csproj" />
-    <Project Path="Smart/Navigation/Smart.Navigation/Smart.Navigation.csproj" />
-    <Project Path="Smart/Navigation/Smart.Navigation.Generator/Smart.Navigation.Generator.csproj" />
-    <Project Path="Smart/Navigation/Smart.Navigation.Avalonia/Smart.Navigation.Avalonia.csproj" />
   </Folder>
   <Folder Name="/Solution Items/">
     <File Path=".editorconfig" />

@@ -1,8 +1,7 @@
 namespace AvaloniaApp.Views;
 
-using CommunityToolkit.Mvvm.ComponentModel;
-
-public abstract class ViewModelBase : ObservableObject, INavigatorAware, INavigationEventSupport
+[ObservableGeneratorOption(Reactive = true, ViewModel = true)]
+public abstract class AppViewModelBase : ExtendViewModelBase, INavigatorAware, INavigationEventSupport
 {
     public INavigator Navigator { get; set; } = default!;
 
