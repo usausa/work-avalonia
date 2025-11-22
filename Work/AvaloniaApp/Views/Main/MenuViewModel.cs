@@ -2,6 +2,7 @@ namespace AvaloniaApp.Views.Main;
 
 using System.IO.Ports;
 
+using Avalonia.Controls;
 using Avalonia.Threading;
 
 using AvaloniaApp.Settings;
@@ -19,7 +20,14 @@ public sealed partial class MenuViewModel : AppViewModelBase
 
     public MenuViewModel(Setting setting)
     {
-        // TODO components
+        if (Design.IsDesignMode)
+        {
+            port = default!;
+            StartCommand = default!;
+            StopCommand = default!;
+            return;
+        }
+
         port = new SerialPort(setting.QrPort)
         {
             BaudRate = 19200,
