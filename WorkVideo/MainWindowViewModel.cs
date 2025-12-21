@@ -1,4 +1,4 @@
-namespace Example.Video4Linux2.AvaloniaApp;
+﻿namespace Example.Video4Linux2.AvaloniaApp;
 
 using Avalonia;
 
@@ -182,6 +182,7 @@ public sealed class VideoCapture : IDisposable
 
         Width = width;
         Height = height;
+        fd = 1;
 
         return true;
     }
@@ -241,13 +242,90 @@ public sealed class VideoCapture : IDisposable
 
     private void CaptureLoop(CancellationToken cancellationToken)
     {
+        var image = new ImageGenerator();
+        image.UpdateGrayLevel();
+
         while (!cancellationToken.IsCancellationRequested)
         {
-            // TODO
-            var buffer = new byte[Width * Height * 2];
-
             var handler = FrameCaptured;
-            handler?.Invoke(new FrameBuffer(buffer, buffer.Length));
+            handler?.Invoke(new FrameBuffer(image.GetBuffer(), image.GetBuffer().Length));
+
+            image.UpdateGrayLevel();
+            Thread.Sleep(33);
         }
     }
+}
+
+public sealed class ImageGenerator
+{
+    private const int Width = 640;
+    private const int Height = 480;
+    private const int BytesPerPixel = 2; // YUYV形式: 2ピクセルで4バイト、1ピクセルあたり2バイト
+    private const int BufferSize = Width * Height * BytesPerPixel;
+
+    private readonly byte[] yuyvBuffer;
+    private float grayLevel;
+    private float direction;
+
+    public ImageGenerator()
+    {
+        yuyvBuffer = new byte[BufferSize];
+        grayLevel = 128f;
+        direction = 1f;
+
+        // 初期化：グレーで塗りつぶし
+        FillWithGray((byte)grayLevel);
+    }
+
+    /// <summary>
+    /// YUYV形式でグレーで塗りつぶす
+    /// YUYV形式: Y0 U Y1 V (2ピクセル分で4バイト)
+    /// グレーの場合: Y=輝度値, U=128, V=128
+    /// </summary>
+    private void FillWithGray(byte yValue)
+    {
+        var buffer = yuyvBuffer.AsSpan();
+
+        // 4バイト単位で処理（2ピクセル分）
+        for (var i = 0; i < buffer.Length; i += 4)
+        {
+            buffer[i] = yValue; // Y0
+            buffer[i + 1] = 128;    // U (色差: グレーの場合は128)
+            buffer[i + 2] = yValue; // Y1
+            buffer[i + 3] = 128;    // V (色差: グレーの場合は128)
+        }
+    }
+
+    /// <summary>
+    /// グレーレベルを更新（輝度値のみを変更）
+    /// </summary>
+    public void UpdateGrayLevel()
+    {
+        // グレーレベルを変化させる（16〜235の範囲で往復）
+        grayLevel += direction * 2f;
+
+        if (grayLevel >= 235f)
+        {
+            grayLevel = 235f;
+            direction = -1f;
+        }
+        else if (grayLevel <= 16f)
+        {
+            grayLevel = 16f;
+            direction = 1f;
+        }
+
+        var yValue = (byte)grayLevel;
+        var buffer = yuyvBuffer.AsSpan();
+
+        // 輝度値(Y)のみを効率的に更新
+        // Y0とY1の位置だけを更新（U, Vは変更不要）
+        for (var i = 0; i < buffer.Length; i += 4)
+        {
+            buffer[i] = yValue; // Y0
+            buffer[i + 2] = yValue; // Y1
+        }
+    }
+
+    public byte[] GetBuffer() => yuyvBuffer;
 }
