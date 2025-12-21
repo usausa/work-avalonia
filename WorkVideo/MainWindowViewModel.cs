@@ -15,6 +15,7 @@ public partial class MainWindowViewModel : ExtendViewModelBase
     private const int Width = 640;
     private const int Height = 480;
     private const int BitmapBufferSize = Width * Height * 4;
+    private const double Alpha = 0.3;
 
     private readonly IDispatcher dispatcher;
 
@@ -24,8 +25,31 @@ public partial class MainWindowViewModel : ExtendViewModelBase
 
     private readonly WriteableBitmap? bitmap;
 
+    private readonly DispatcherTimer statsTimer;
+
+    private int frameCount;
+    private int lastFrameCount;
+    private int[] lastGcCounts = new int[3];
+
+    private double smoothedFps;
+    private double smoothedGc0;
+    private double smoothedGc1;
+    private double smoothedGc2;
+
     [ObservableProperty]
     public partial WriteableBitmap? Bitmap { get; set; }
+
+    [ObservableProperty]
+    public partial float Fps { get; set; }
+
+    [ObservableProperty]
+    public partial float Gc0PerSec { get; set; }
+
+    [ObservableProperty]
+    public partial float Gc1PerSec { get; set; }
+
+    [ObservableProperty]
+    public partial float Gc2PerSec { get; set; }
 
     public IObserveCommand StartCommand { get; }
 
@@ -41,12 +65,25 @@ public partial class MainWindowViewModel : ExtendViewModelBase
 
         StartCommand = MakeDelegateCommand(StartCapture, () => !capture.IsCapturing);
         StopCommand = MakeDelegateCommand(StopCapture, () => capture.IsCapturing);
+
+        statsTimer = new DispatcherTimer
+        {
+            Interval = TimeSpan.FromSeconds(1)
+        };
+        statsTimer.Tick += OnStatsTimerTick;
+
+        for (var i = 0; i < 3; i++)
+        {
+            lastGcCounts[i] = GC.CollectionCount(i);
+        }
     }
 
     protected override void Dispose(bool disposing)
     {
         if (disposing)
         {
+            statsTimer.Stop();
+            statsTimer.Tick -= OnStatsTimerTick;
             capture.Dispose();
             capture.FrameCaptured -= CaptureOnFrameCaptured;
             bufferManager.Dispose();
@@ -61,17 +98,18 @@ public partial class MainWindowViewModel : ExtendViewModelBase
         // TODO fix size
         capture.Open();
         capture.StartCapture();
+        statsTimer.Start();
     }
 
     private void StopCapture()
     {
+        statsTimer.Stop();
         capture.StopCapture();
         capture.Close();
     }
 
     private void CaptureOnFrameCaptured(FrameBuffer frame)
     {
-        // TODO show fps
         var slot = bufferManager.NextSlot();
         lock (slot.Lock)
         {
@@ -106,6 +144,41 @@ public partial class MainWindowViewModel : ExtendViewModelBase
         // Disable cache & update
         Bitmap = null;
         Bitmap = bitmap;
+
+        Interlocked.Increment(ref frameCount);
+    }
+
+    private void OnStatsTimerTick(object? sender, EventArgs e)
+    {
+        var currentFrameCount = frameCount;
+        var fps = currentFrameCount - lastFrameCount;
+        lastFrameCount = currentFrameCount;
+
+        smoothedFps = (Alpha * fps) + ((1 - Alpha) * smoothedFps);
+        Fps = (float)smoothedFps;
+
+        for (var i = 0; i < 3; i++)
+        {
+            var currentGcCount = GC.CollectionCount(i);
+            var gcPerSec = currentGcCount - lastGcCounts[i];
+            lastGcCounts[i] = currentGcCount;
+
+            switch (i)
+            {
+                case 0:
+                    smoothedGc0 = (Alpha * gcPerSec) + ((1 - Alpha) * smoothedGc0);
+                    Gc0PerSec = (float)smoothedGc0;
+                    break;
+                case 1:
+                    smoothedGc1 = (Alpha * gcPerSec) + ((1 - Alpha) * smoothedGc1);
+                    Gc1PerSec = (float)smoothedGc1;
+                    break;
+                case 2:
+                    smoothedGc2 = (Alpha * gcPerSec) + ((1 - Alpha) * smoothedGc2);
+                    Gc2PerSec = (float)smoothedGc2;
+                    break;
+            }
+        }
     }
 }
 
