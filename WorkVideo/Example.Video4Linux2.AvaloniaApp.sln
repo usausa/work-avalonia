@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 18
+VisualStudioVersion = 18.1.11304.174 d18.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Example.Video4Linux2.AvaloniaApp", "Example.Video4Linux2.AvaloniaApp.csproj", "{84F359CD-288F-D099-9BE9-95CB912C25CE}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{84F359CD-288F-D099-9BE9-95CB912C25CE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{84F359CD-288F-D099-9BE9-95CB912C25CE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{84F359CD-288F-D099-9BE9-95CB912C25CE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{84F359CD-288F-D099-9BE9-95CB912C25CE}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {84C1B016-F3B9-4553-AE90-2A83943B1F05}
+	EndGlobalSection
+EndGlobal
