@@ -215,7 +215,8 @@ public sealed class VideoCapture : IDisposable
 
         // Start capture loop
         captureCts = new CancellationTokenSource();
-        captureThread = new Thread(() => CaptureLoop(captureCts.Token))
+        // ReSharper disable once AsyncVoidLambda
+        captureThread = new Thread(async () => await CaptureLoop(captureCts.Token))
         {
             IsBackground = true,
             Name = "V4L2 Capture"
@@ -240,7 +241,7 @@ public sealed class VideoCapture : IDisposable
         captureCts = null;
     }
 
-    private void CaptureLoop(CancellationToken cancellationToken)
+    private async Task CaptureLoop(CancellationToken cancellationToken)
     {
         var image = new ImageGenerator();
         image.UpdateGrayLevel();
@@ -251,7 +252,7 @@ public sealed class VideoCapture : IDisposable
             handler?.Invoke(new FrameBuffer(image.GetBuffer(), image.GetBuffer().Length));
 
             image.UpdateGrayLevel();
-            Thread.Sleep(33);
+            await Task.Delay(33, cancellationToken);
         }
     }
 }
