@@ -15,7 +15,7 @@ public partial class MainWindowViewModel : ExtendViewModelBase
     private const int Width = 640;
     private const int Height = 480;
     private const int BitmapBufferSize = Width * Height * 4;
-    private const double Alpha = 0.3;
+    private const double Alpha = 0.5;
 
     private readonly IDispatcher dispatcher;
 
