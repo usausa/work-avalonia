@@ -163,7 +163,7 @@ public class FaceBoxOverlay : Avalonia.Controls.Control
                 canvas.DrawRect(rect, paint);
 
                 // Draw confidence text at bottom-right inside the box
-                var confidenceText = $"{faceBox.Confidence:P0}";
+                var confidenceText = $"{faceBox.Confidence:P1}";
                 var textBounds = new SKRect();
                 textPaint.MeasureText(confidenceText, ref textBounds);
 
