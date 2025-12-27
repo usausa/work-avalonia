@@ -7,6 +7,7 @@ using Avalonia.Platform;
 using Avalonia.Threading;
 
 using Example.Video4Linux2.AvaloniaApp.Helper;
+using SkiaSharp;
 using System.Runtime.Versioning;
 
 [ObservableGeneratorOption(Reactive = true, ViewModel = true)]
@@ -27,6 +28,8 @@ public partial class MainWindowViewModel : ExtendViewModelBase
 
     private readonly DispatcherTimer statsTimer;
 
+    private readonly FaceDetector faceDetector;
+
     private int frameCount;
     private int lastFrameCount;
     private int[] lastGcCounts = new int[3];
@@ -36,8 +39,12 @@ public partial class MainWindowViewModel : ExtendViewModelBase
     private double smoothedGc1;
     private double smoothedGc2;
 
+    private byte[] faceData = [];
+
     [ObservableProperty]
     public partial WriteableBitmap? Bitmap { get; set; }
+
+    public ObservableCollection<FaceBox> FaceBoxes { get; } = new();
 
     [ObservableProperty]
     public partial float Fps { get; set; }
@@ -76,6 +83,34 @@ public partial class MainWindowViewModel : ExtendViewModelBase
         {
             lastGcCounts[i] = GC.CollectionCount(i);
         }
+
+        faceDetector = new FaceDetector("version-RFB-320.onnx");
+
+        // Load face data
+        var file = @"D:\学習データ\people640x480.png";
+        if (File.Exists(file))
+        {
+            using var inputStream = File.OpenRead(file);
+            using var originalBitmap = SKBitmap.Decode(inputStream);
+
+            var width = originalBitmap.Width;
+            var height = originalBitmap.Height;
+
+            // Read
+            faceData = new byte[width * height * 3];
+            var index = 0;
+            for (var y = 0; y < height; y++)
+            {
+                for (var x = 0; x < width; x++)
+                {
+                    var pixel = originalBitmap.GetPixel(x, y);
+                    faceData[index++] = pixel.Red;
+                    faceData[index++] = pixel.Green;
+                    faceData[index++] = pixel.Blue;
+                }
+            }
+
+        }
     }
 
     protected override void Dispose(bool disposing)
@@ -95,7 +130,6 @@ public partial class MainWindowViewModel : ExtendViewModelBase
 
     private void StartCapture()
     {
-        // TODO fix size
         capture.Open();
         capture.StartCapture();
         statsTimer.Start();
@@ -114,6 +148,12 @@ public partial class MainWindowViewModel : ExtendViewModelBase
         lock (slot.Lock)
         {
             ImageHelper.ConvertYUYV2RGBA(frame.AsSpan(), slot.Buffer);
+
+            // 画像認識
+            faceDetector.Detect(faceData, Width, Height);
+            slot.FaceBoxes.Clear();
+            slot.FaceBoxes.AddRange(faceDetector.DetectedFaceBoxes);
+
             slot.MarkUpdated();
         }
 
@@ -139,6 +179,12 @@ public partial class MainWindowViewModel : ExtendViewModelBase
             using var lockedBitmap = bitmap!.Lock();
             var buffer = new Span<byte>(lockedBitmap.Address.ToPointer(), BitmapBufferSize);
             slot.Buffer.CopyTo(buffer);
+
+            FaceBoxes.Clear();
+            foreach (var box in slot.FaceBoxes)
+            {
+                FaceBoxes.Add(box);
+            }
         }
 
         // Disable cache & update

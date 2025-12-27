@@ -16,79 +16,79 @@
 
     <Grid RowDefinitions="*,Auto">
 
-        <Grid Grid.Row="0">
-            <Image Width="640"
-                   Height="480"
-                   Stretch="Uniform"
-                   Source="{Binding Bitmap}"
-                   HorizontalAlignment="Center"
-                   VerticalAlignment="Center" />
+        <Image Grid.Row="0"
+               Width="640"
+               Height="480"
+               Stretch="Uniform"
+               Source="{Binding Bitmap}"
+               HorizontalAlignment="Center"
+               VerticalAlignment="Center" />
 
-            <Border VerticalAlignment="Top" 
-                    HorizontalAlignment="Right"
-                    Margin="3"
-                    Background="#80000000"
-                    BorderBrush="#C0FFFFFF"
-                    BorderThickness="1"
-                    CornerRadius="3"
-                    Padding="3">
-                <Grid RowDefinitions="Auto,Auto,Auto,Auto" 
-                      ColumnDefinitions="Auto,Auto">
-                    
-                    <TextBlock Grid.Row="0" Grid.Column="0" 
-                               Text="FPS" 
-                               Foreground="White" 
-                               FontFamily="Consolas"
-                               FontSize="12"/>
-                    <TextBlock Grid.Row="0" Grid.Column="1" 
-                               Text="{Binding Fps, StringFormat={}{0:F1}}" 
-                               Foreground="White" 
-                               FontFamily="Consolas"
-                               FontSize="12"
-                               Width="50"
-                               TextAlignment="Right"/>
-                    
-                    <TextBlock Grid.Row="1" Grid.Column="0" 
-                               Text="GC0/s" 
-                               Foreground="White" 
-                               FontFamily="Consolas"
-                               FontSize="12"/>
-                    <TextBlock Grid.Row="1" Grid.Column="1" 
-                               Text="{Binding Gc0PerSec, StringFormat={}{0:F1}}" 
-                               Foreground="White" 
-                               FontFamily="Consolas"
-                               FontSize="12"
-                               Width="50"
-                               TextAlignment="Right"/>
-                    
-                    <TextBlock Grid.Row="2" Grid.Column="0" 
-                               Text="GC1/s" 
-                               Foreground="White" 
-                               FontFamily="Consolas"
-                               FontSize="12"/>
-                    <TextBlock Grid.Row="2" Grid.Column="1" 
-                               Text="{Binding Gc1PerSec, StringFormat={}{0:F1}}" 
-                               Foreground="White" 
-                               FontFamily="Consolas"
-                               FontSize="12"
-                               Width="50"
-                               TextAlignment="Right"/>
-                    
-                    <TextBlock Grid.Row="3" Grid.Column="0" 
-                               Text="GC2/s" 
-                               Foreground="White" 
-                               FontFamily="Consolas"
-                               FontSize="12"/>
-                    <TextBlock Grid.Row="3" Grid.Column="1" 
-                               Text="{Binding Gc2PerSec, StringFormat={}{0:F1}}" 
-                               Foreground="White" 
-                               FontFamily="Consolas"
-                               FontSize="12"
-                               Width="50"
-                               TextAlignment="Right"/>
-                </Grid>
-            </Border>
-        </Grid>
+        <Border Grid.Row="0"
+                VerticalAlignment="Top"
+                HorizontalAlignment="Right"
+                Margin="3"
+                Background="#80000000"
+                BorderBrush="#C0FFFFFF"
+                BorderThickness="1"
+                CornerRadius="3"
+                Padding="3">
+            <Grid RowDefinitions="Auto,Auto,Auto,Auto"
+                  ColumnDefinitions="Auto,Auto">
+
+                <TextBlock Grid.Row="0" Grid.Column="0"
+                           Text="FPS"
+                           Foreground="White"
+                           FontFamily="Consolas"
+                           FontSize="12"/>
+                <TextBlock Grid.Row="0" Grid.Column="1"
+                           Text="{Binding Fps, StringFormat={}{0:F1}}"
+                           Foreground="White"
+                           FontFamily="Consolas"
+                           FontSize="12"
+                           Width="50"
+                           TextAlignment="Right"/>
+
+                <TextBlock Grid.Row="1" Grid.Column="0"
+                           Text="GC0/s"
+                           Foreground="White"
+                           FontFamily="Consolas"
+                           FontSize="12"/>
+                <TextBlock Grid.Row="1" Grid.Column="1"
+                           Text="{Binding Gc0PerSec, StringFormat={}{0:F1}}"
+                           Foreground="White"
+                           FontFamily="Consolas"
+                           FontSize="12"
+                           Width="50"
+                           TextAlignment="Right"/>
+
+                <TextBlock Grid.Row="2" Grid.Column="0"
+                           Text="GC1/s"
+                           Foreground="White"
+                           FontFamily="Consolas"
+                           FontSize="12"/>
+                <TextBlock Grid.Row="2" Grid.Column="1"
+                           Text="{Binding Gc1PerSec, StringFormat={}{0:F1}}"
+                           Foreground="White"
+                           FontFamily="Consolas"
+                           FontSize="12"
+                           Width="50"
+                           TextAlignment="Right"/>
+
+                <TextBlock Grid.Row="3" Grid.Column="0"
+                           Text="GC2/s"
+                           Foreground="White"
+                           FontFamily="Consolas"
+                           FontSize="12"/>
+                <TextBlock Grid.Row="3" Grid.Column="1"
+                           Text="{Binding Gc2PerSec, StringFormat={}{0:F1}}"
+                           Foreground="White"
+                           FontFamily="Consolas"
+                           FontSize="12"
+                           Width="50"
+                           TextAlignment="Right"/>
+            </Grid>
+        </Border>
 
         <Grid Grid.Row="1"
               ColumnDefinitions="*,*"

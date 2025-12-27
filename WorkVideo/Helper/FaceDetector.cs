@@ -1,0 +1,317 @@
+﻿namespace Example.Video4Linux2.AvaloniaApp.Helper;
+
+using Microsoft.ML.OnnxRuntime;
+using Microsoft.ML.OnnxRuntime.Tensors;
+
+public sealed class FaceDetector : IDisposable
+{
+    private const int InitialBufferSize = 128;
+
+    private readonly InferenceSession session;
+
+    private readonly DenseTensor<float> inputTensor;
+
+    private readonly List<float> scoreBuffer;
+
+    private readonly List<float> boxBuffer;
+
+    private readonly List<FaceBox> detectionBuffer;
+
+    public List<FaceBox> DetectedFaceBoxes { get; } = new();
+
+    public int ModelWidth { get; }
+
+    public int ModelHeight { get; }
+
+    public FaceDetector(string modelPath)
+    {
+        var options = new SessionOptions
+        {
+            LogSeverityLevel = OrtLoggingLevel.ORT_LOGGING_LEVEL_ERROR,
+            EnableCpuMemArena = true,
+            EnableMemoryPattern = true,
+            GraphOptimizationLevel = GraphOptimizationLevel.ORT_ENABLE_ALL
+        };
+
+        session = new InferenceSession(modelPath, options);
+
+        // ONNXモデルから入力サイズを取得
+        var inputMetadata = session.InputMetadata.First().Value;
+        var dimensions = inputMetadata.Dimensions;
+
+        // 入力テンソルの形状は [batch, channels, height, width] を想定
+        if (dimensions.Length >= 4)
+        {
+            ModelHeight = dimensions[2];
+            ModelWidth = dimensions[3];
+        }
+        else
+        {
+            throw new InvalidOperationException("モデルの入力テンソルの形状が想定と異なります。");
+        }
+
+        inputTensor = new DenseTensor<float>(new[] { 1, 3, ModelHeight, ModelWidth });
+
+        scoreBuffer = new List<float>(InitialBufferSize);
+        boxBuffer = new List<float>(InitialBufferSize * 4);
+        detectionBuffer = new List<FaceBox>(InitialBufferSize);
+    }
+
+    public void Dispose()
+    {
+        session.Dispose();
+    }
+
+    public void Detect(ReadOnlySpan<byte> image, int width, int height, float confidenceThreshold = 0.5f, float iouThreshold = 0.3f)
+    {
+        var mean = new[] { 127f, 127f, 127f };
+        var scale = 128f;
+
+        // サイズが一致する場合はリサイズ不要
+        if (width == ModelWidth && height == ModelHeight)
+        {
+            CopyDirectToTensor(image, inputTensor, width, height, mean, scale);
+        }
+        else
+        {
+            ResizeBilinearDirectToTensor(image, inputTensor, width, height, ModelWidth, ModelHeight, mean, scale);
+        }
+
+        var inputs = new List<NamedOnnxValue>
+        {
+            NamedOnnxValue.CreateFromTensor(session.InputMetadata.First().Key, inputTensor)
+        };
+
+        using var results = session.Run(inputs);
+        var outputList = results.ToList();
+
+        // 再利用するListをクリアしてからデータをコピー
+        scoreBuffer.Clear();
+        boxBuffer.Clear();
+
+        foreach (var score in outputList[0].AsEnumerable<float>())
+        {
+            scoreBuffer.Add(score);
+        }
+
+        foreach (var box in outputList[1].AsEnumerable<float>())
+        {
+            boxBuffer.Add(box);
+        }
+
+        var scoresDims = (outputList[0].Value as DenseTensor<float>)?.Dimensions.ToArray();
+        var numBoxes = scoresDims?[1] ?? 0;
+
+        DetectedFaceBoxes.Clear();
+        detectionBuffer.Clear();
+
+        for (var i = 0; i < numBoxes; i++)
+        {
+            var faceScore = scoreBuffer[i * 2 + 1];
+            if (faceScore > confidenceThreshold)
+            {
+                detectionBuffer.Add(new FaceBox
+                {
+                    Left = boxBuffer[i * 4],
+                    Top = boxBuffer[i * 4 + 1],
+                    Right = boxBuffer[i * 4 + 2],
+                    Bottom = boxBuffer[i * 4 + 3],
+                    Confidence = faceScore
+                });
+            }
+        }
+
+        ApplyNMS(detectionBuffer, iouThreshold);
+    }
+
+    private void ApplyNMS(List<FaceBox> boxes, float iouThreshold)
+    {
+        // アロケーション減らす！
+        if (boxes.Count == 0)
+        {
+            return;
+        }
+
+        var count = boxes.Count;
+
+        // FaceBox配列を直接ソート（インプレース）
+        var boxArray = ArrayPool<FaceBox>.Shared.Rent(count);
+        var suppressed = ArrayPool<bool>.Shared.Rent(count);
+
+        try
+        {
+            // Listから配列にコピー
+            for (var i = 0; i < count; i++)
+            {
+                boxArray[i] = boxes[i];
+                suppressed[i] = false;
+            }
+
+            // FaceBox配列をConfidence降順でソート
+            Array.Sort(boxArray, 0, count, FaceBox.ConfidenceComparer);
+
+            for (var i = 0; i < count; i++)
+            {
+                if (suppressed[i])
+                {
+                    continue;
+                }
+
+                ref readonly var currentBox = ref boxArray[i];
+                DetectedFaceBoxes.Add(currentBox);
+
+                // 残りのボックスとのIOUをチェック
+                for (var j = i + 1; j < count; j++)
+                {
+                    if (suppressed[j])
+                    {
+                        continue;
+                    }
+
+                    if (CalculateIOU(in currentBox, in boxArray[j]) >= iouThreshold)
+                    {
+                        suppressed[j] = true;
+                    }
+                }
+            }
+        }
+        finally
+        {
+            ArrayPool<FaceBox>.Shared.Return(boxArray);
+            ArrayPool<bool>.Shared.Return(suppressed);
+        }
+    }
+
+    private static float CalculateIOU(in FaceBox box1, in FaceBox box2)
+    {
+        var x1 = Math.Max(box1.Left, box2.Left);
+        var y1 = Math.Max(box1.Top, box2.Top);
+        var x2 = Math.Min(box1.Right, box2.Right);
+        var y2 = Math.Min(box1.Bottom, box2.Bottom);
+
+        var intersectionArea = Math.Max(0, x2 - x1) * Math.Max(0, y2 - y1);
+        var box1Area = (box1.Right - box1.Left) * (box1.Bottom - box1.Top);
+        var box2Area = (box2.Right - box2.Left) * (box2.Bottom - box2.Top);
+        var unionArea = box1Area + box2Area - intersectionArea;
+
+        return unionArea > 0 ? intersectionArea / unionArea : 0;
+    }
+
+    //--------------------------------------------------------------------------------
+    // ヘルパー
+    //--------------------------------------------------------------------------------
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    private static int Min(int a, int b) => a < b ? a : b;
+
+    //--------------------------------------------------------------------------------
+    // スカラー処理
+    //--------------------------------------------------------------------------------
+
+    private static void CopyDirectToTensor(ReadOnlySpan<byte> source, DenseTensor<float> tensor, int width, int height, float[] mean, float scale)
+    {
+        for (var y = 0; y < height; y++)
+        {
+            for (var x = 0; x < width; x++)
+            {
+                var idx = (y * width + x) * 3;
+
+                tensor[0, 0, y, x] = (source[idx] - mean[0]) / scale;
+                tensor[0, 1, y, x] = (source[idx + 1] - mean[1]) / scale;
+                tensor[0, 2, y, x] = (source[idx + 2] - mean[2]) / scale;
+            }
+        }
+    }
+
+    private static void ResizeBilinearDirectToTensor(ReadOnlySpan<byte> source, DenseTensor<float> tensor, int srcWidth, int srcHeight, int dstWidth, int dstHeight, float[] mean, float scale)
+    {
+        var xRatio = (float)(srcWidth - 1) / dstWidth;
+        var yRatio = (float)(srcHeight - 1) / dstHeight;
+
+        for (var y = 0; y < dstHeight; y++)
+        {
+            var srcY = y * yRatio;
+            var srcYInt = (int)srcY;
+            var yDiff = srcY - srcYInt;
+            var yDiffInv = 1.0f - yDiff;
+            var srcY1 = Min(srcYInt + 1, srcHeight - 1);
+
+            var srcRow0 = srcYInt * srcWidth * 3;
+            var srcRow1 = srcY1 * srcWidth * 3;
+
+            for (var x = 0; x < dstWidth; x++)
+            {
+                var srcX = x * xRatio;
+                var srcXInt = (int)srcX;
+                var xDiff = srcX - srcXInt;
+                var xDiffInv = 1.0f - xDiff;
+                var srcX1 = Min(srcXInt + 1, srcWidth - 1);
+
+                var srcCol0 = srcXInt * 3;
+                var srcCol1 = srcX1 * 3;
+
+                var idx00 = srcRow0 + srcCol0;
+                var idx10 = srcRow0 + srcCol1;
+                var idx01 = srcRow1 + srcCol0;
+                var idx11 = srcRow1 + srcCol1;
+
+                var w00 = xDiffInv * yDiffInv;
+                var w10 = xDiff * yDiffInv;
+                var w01 = xDiffInv * yDiff;
+                var w11 = xDiff * yDiff;
+
+                // R channel
+                var valR =
+                    source[idx00] * w00 +
+                    source[idx10] * w10 +
+                    source[idx01] * w01 +
+                    source[idx11] * w11;
+                tensor[0, 0, y, x] = (valR - mean[0]) / scale;
+
+                // G channel
+                var valG =
+                    source[idx00 + 1] * w00 +
+                    source[idx10 + 1] * w10 +
+                    source[idx01 + 1] * w01 +
+                    source[idx11 + 1] * w11;
+                tensor[0, 1, y, x] = (valG - mean[1]) / scale;
+
+                // B channel
+                var valB =
+                    source[idx00 + 2] * w00 +
+                    source[idx10 + 2] * w10 +
+                    source[idx01 + 2] * w01 +
+                    source[idx11 + 2] * w11;
+                tensor[0, 2, y, x] = (valB - mean[2]) / scale;
+            }
+        }
+    }
+}
+
+public readonly struct FaceBox
+{
+    public float Left { get; init; }
+    public float Top { get; init; }
+    public float Right { get; init; }
+    public float Bottom { get; init; }
+    public float Confidence { get; init; }
+
+    public override string ToString()
+    {
+        return $"Face at ({Left:F4}, {Top:F4}) to ({Right:F4}, {Bottom:F4}) - Confidence: {Confidence:F2}";
+    }
+
+    // FaceBox専用のConfidence降順Comparer
+    private sealed class ConfidenceDescendingComparer : IComparer<FaceBox>
+    {
+        public int Compare(FaceBox x, FaceBox y)
+        {
+            // FaceBoxはstructなので参照比較は不要
+            return y.Confidence.CompareTo(x.Confidence);
+        }
+    }
+
+    private static readonly ConfidenceDescendingComparer Comparer = new();
+
+    public static IComparer<FaceBox> ConfidenceComparer => Comparer;
+}

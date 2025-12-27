@@ -14,6 +14,8 @@ public sealed class BufferManager : IDisposable
 
         public Span<byte> Buffer => buffer.AsSpan(0, bufferSize);
 
+        public List<FaceBox> FaceBoxes { get; } = new();
+
         public Lock Lock { get; }
 
         public int SlotNo => slotNo;
