@@ -62,7 +62,8 @@ public sealed class FaceDetector : IDisposable
         session.Dispose();
     }
 
-    public void Detect(ReadOnlySpan<byte> image, int width, int height, float confidenceThreshold = 0.5f, float iouThreshold = 0.3f)
+    public void Detect(ReadOnlySpan<byte> image, int width, int height, float confidenceThreshold = 0.5f,
+        float iouThreshold = 0.3f)
     {
         var mean = new[] { 127f, 127f, 127f };
         var scale = 128f;
@@ -148,7 +149,7 @@ public sealed class FaceDetector : IDisposable
             }
 
             // FaceBox配列をConfidence降順でソート
-            Array.Sort(boxArray, 0, count, FaceBox.ConfidenceComparer);
+            Array.Sort(boxArray, 0, count, ConfidenceComparer);
 
             for (var i = 0; i < count; i++)
             {
@@ -208,7 +209,8 @@ public sealed class FaceDetector : IDisposable
     // スカラー処理
     //--------------------------------------------------------------------------------
 
-    private static void CopyDirectToTensor(ReadOnlySpan<byte> source, DenseTensor<float> tensor, int width, int height, float[] mean, float scale)
+    private static void CopyDirectToTensor(ReadOnlySpan<byte> source, DenseTensor<float> tensor, int width, int height,
+        float[] mean, float scale)
     {
         for (var y = 0; y < height; y++)
         {
@@ -223,7 +225,8 @@ public sealed class FaceDetector : IDisposable
         }
     }
 
-    private static void ResizeBilinearDirectToTensor(ReadOnlySpan<byte> source, DenseTensor<float> tensor, int srcWidth, int srcHeight, int dstWidth, int dstHeight, float[] mean, float scale)
+    private static void ResizeBilinearDirectToTensor(ReadOnlySpan<byte> source, DenseTensor<float> tensor, int srcWidth,
+        int srcHeight, int dstWidth, int dstHeight, float[] mean, float scale)
     {
         var xRatio = (float)(srcWidth - 1) / dstWidth;
         var yRatio = (float)(srcHeight - 1) / dstHeight;
@@ -286,20 +289,6 @@ public sealed class FaceDetector : IDisposable
             }
         }
     }
-}
-
-public readonly struct FaceBox
-{
-    public float Left { get; init; }
-    public float Top { get; init; }
-    public float Right { get; init; }
-    public float Bottom { get; init; }
-    public float Confidence { get; init; }
-
-    public override string ToString()
-    {
-        return $"Face at ({Left:F4}, {Top:F4}) to ({Right:F4}, {Bottom:F4}) - Confidence: {Confidence:F2}";
-    }
 
     // FaceBox専用のConfidence降順Comparer
     private sealed class ConfidenceDescendingComparer : IComparer<FaceBox>
@@ -314,4 +303,18 @@ public readonly struct FaceBox
     private static readonly ConfidenceDescendingComparer Comparer = new();
 
     public static IComparer<FaceBox> ConfidenceComparer => Comparer;
+}
+
+public readonly struct FaceBox
+{
+    public float Left { get; init; }
+    public float Top { get; init; }
+    public float Right { get; init; }
+    public float Bottom { get; init; }
+    public float Confidence { get; init; }
+
+    public override string ToString()
+    {
+        return $"Face at ({Left:F4}, {Top:F4}) to ({Right:F4}, {Bottom:F4}) - Confidence: {Confidence:F2}";
+    }
 }

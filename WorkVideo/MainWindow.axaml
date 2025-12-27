@@ -4,6 +4,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:s="http://smart/avalonia"
         xmlns:app="using:Example.Video4Linux2.AvaloniaApp"
+        xmlns:controls="using:Example.Video4Linux2.AvaloniaApp.Controls"
         mc:Ignorable="d"
         x:Class="Example.Video4Linux2.AvaloniaApp.MainWindow"
         x:DataType="app:MainWindowViewModel"
@@ -17,12 +18,22 @@
     <Grid RowDefinitions="*,Auto">
 
         <Image Grid.Row="0"
+               x:Name="VideoImage"
                Width="640"
                Height="480"
                Stretch="Uniform"
                Source="{Binding Bitmap}"
                HorizontalAlignment="Center"
                VerticalAlignment="Center" />
+
+        <controls:FaceBoxOverlay Grid.Row="0"
+                                  Width="640"
+                                  Height="480"
+                                  HorizontalAlignment="Center"
+                                  VerticalAlignment="Center"
+                                  FaceBoxes="{Binding FaceBoxes}"
+                                  LowScoreColor="Yellow"
+                                  HighScoreColor="Red" />
 
         <Border Grid.Row="0"
                 VerticalAlignment="Top"
