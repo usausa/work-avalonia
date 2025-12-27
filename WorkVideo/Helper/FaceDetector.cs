@@ -1,7 +1,4 @@
-﻿using System.Diagnostics;
-using HarfBuzzSharp;
-
-namespace Example.Video4Linux2.AvaloniaApp.Helper;
+﻿namespace Example.Video4Linux2.AvaloniaApp.Helper;
 
 using Microsoft.ML.OnnxRuntime;
 using Microsoft.ML.OnnxRuntime.Tensors;
@@ -77,8 +74,12 @@ public sealed class FaceDetector : IDisposable
         using var results = session.Run(inputs);
         var outputList = results.ToList();
 
-        var scoresDims = (outputList[0].Value as DenseTensor<float>)?.Dimensions.ToArray();
-        var numBoxes = scoresDims?[1] ?? 0;
+        // AsTensorでTensorとして取得
+        var scoresTensor = outputList[0].AsTensor<float>();
+        var boxesTensor = outputList[1].AsTensor<float>();
+
+        var scoresDims = scoresTensor.Dimensions.ToArray();
+        var numBoxes = scoresDims[1];
 
         DetectedFaceBoxes.Clear();
         if (numBoxes == 0)
@@ -86,38 +87,21 @@ public sealed class FaceDetector : IDisposable
             return;
         }
 
-        // 再利用するListをクリアしてからデータをコピー
-        var scoreBuffer = ArrayPool<float>.Shared.Rent(numBoxes * 2 + 1);
-        var boxBuffer = ArrayPool<float>.Shared.Rent(numBoxes * 4);
         var detectionBuffer = ArrayPool<FaceBox>.Shared.Rent(numBoxes);
         try
         {
-            var offset = 0;
-            foreach (var score in outputList[0].AsEnumerable<float>())
-            {
-                scoreBuffer[offset++] = score;
-            }
-
-            offset = 0;
-            foreach (var box in outputList[1].AsEnumerable<float>())
-            {
-                boxBuffer[offset++] = box;
-            }
-
             var detectionCount = 0;
             for (var i = 0; i < numBoxes; i++)
             {
-                var faceScore = scoreBuffer[i * 2 + 1];
+                var faceScore = scoresTensor[0, i, 1];
                 if (faceScore > confidenceThreshold)
                 {
-                    Debug.WriteLine($"{faceScore} {i} {i * 2 + 1}");
-
                     detectionBuffer[detectionCount++] = new FaceBox
                     {
-                        Left = boxBuffer[i * 4],
-                        Top = boxBuffer[i * 4 + 1],
-                        Right = boxBuffer[i * 4 + 2],
-                        Bottom = boxBuffer[i * 4 + 3],
+                        Left = boxesTensor[0, i, 0],
+                        Top = boxesTensor[0, i, 1],
+                        Right = boxesTensor[0, i, 2],
+                        Bottom = boxesTensor[0, i, 3],
                         Confidence = faceScore
                     };
                 }
@@ -127,8 +111,6 @@ public sealed class FaceDetector : IDisposable
         }
         finally
         {
-            ArrayPool<float>.Shared.Return(scoreBuffer);
-            ArrayPool<float>.Shared.Return(boxBuffer);
             ArrayPool<FaceBox>.Shared.Return(detectionBuffer);
         }
     }
