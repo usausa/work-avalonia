@@ -1,21 +1,16 @@
-﻿namespace Example.Video4Linux2.AvaloniaApp.Helper;
+﻿using System.Diagnostics;
+using HarfBuzzSharp;
+
+namespace Example.Video4Linux2.AvaloniaApp.Helper;
 
 using Microsoft.ML.OnnxRuntime;
 using Microsoft.ML.OnnxRuntime.Tensors;
 
 public sealed class FaceDetector : IDisposable
 {
-    private const int InitialBufferSize = 128;
-
     private readonly InferenceSession session;
 
     private readonly DenseTensor<float> inputTensor;
-
-    private readonly List<float> scoreBuffer;
-
-    private readonly List<float> boxBuffer;
-
-    private readonly List<FaceBox> detectionBuffer;
 
     public List<FaceBox> DetectedFaceBoxes { get; } = new();
 
@@ -51,10 +46,6 @@ public sealed class FaceDetector : IDisposable
         }
 
         inputTensor = new DenseTensor<float>(new[] { 1, 3, ModelHeight, ModelWidth });
-
-        scoreBuffer = new List<float>(InitialBufferSize);
-        boxBuffer = new List<float>(InitialBufferSize * 4);
-        detectionBuffer = new List<FaceBox>(InitialBufferSize);
     }
 
     public void Dispose()
@@ -86,54 +77,71 @@ public sealed class FaceDetector : IDisposable
         using var results = session.Run(inputs);
         var outputList = results.ToList();
 
-        // 再利用するListをクリアしてからデータをコピー
-        scoreBuffer.Clear();
-        boxBuffer.Clear();
-
-        foreach (var score in outputList[0].AsEnumerable<float>())
-        {
-            scoreBuffer.Add(score);
-        }
-
-        foreach (var box in outputList[1].AsEnumerable<float>())
-        {
-            boxBuffer.Add(box);
-        }
-
         var scoresDims = (outputList[0].Value as DenseTensor<float>)?.Dimensions.ToArray();
         var numBoxes = scoresDims?[1] ?? 0;
 
         DetectedFaceBoxes.Clear();
-        detectionBuffer.Clear();
-
-        for (var i = 0; i < numBoxes; i++)
-        {
-            var faceScore = scoreBuffer[i * 2 + 1];
-            if (faceScore > confidenceThreshold)
-            {
-                detectionBuffer.Add(new FaceBox
-                {
-                    Left = boxBuffer[i * 4],
-                    Top = boxBuffer[i * 4 + 1],
-                    Right = boxBuffer[i * 4 + 2],
-                    Bottom = boxBuffer[i * 4 + 3],
-                    Confidence = faceScore
-                });
-            }
-        }
-
-        ApplyNMS(detectionBuffer, iouThreshold);
-    }
-
-    private void ApplyNMS(List<FaceBox> boxes, float iouThreshold)
-    {
-        // アロケーション減らす！
-        if (boxes.Count == 0)
+        if (numBoxes == 0)
         {
             return;
         }
 
-        var count = boxes.Count;
+        // 再利用するListをクリアしてからデータをコピー
+        var scoreBuffer = ArrayPool<float>.Shared.Rent(numBoxes * 2 + 1);
+        var boxBuffer = ArrayPool<float>.Shared.Rent(numBoxes * 4);
+        var detectionBuffer = ArrayPool<FaceBox>.Shared.Rent(numBoxes);
+        try
+        {
+            var offset = 0;
+            foreach (var score in outputList[0].AsEnumerable<float>())
+            {
+                scoreBuffer[offset++] = score;
+            }
+
+            offset = 0;
+            foreach (var box in outputList[1].AsEnumerable<float>())
+            {
+                boxBuffer[offset++] = box;
+            }
+
+            var detectionCount = 0;
+            for (var i = 0; i < numBoxes; i++)
+            {
+                var faceScore = scoreBuffer[i * 2 + 1];
+                if (faceScore > confidenceThreshold)
+                {
+                    Debug.WriteLine($"{faceScore} {i} {i * 2 + 1}");
+
+                    detectionBuffer[detectionCount++] = new FaceBox
+                    {
+                        Left = boxBuffer[i * 4],
+                        Top = boxBuffer[i * 4 + 1],
+                        Right = boxBuffer[i * 4 + 2],
+                        Bottom = boxBuffer[i * 4 + 3],
+                        Confidence = faceScore
+                    };
+                }
+            }
+
+            ApplyNMS(detectionBuffer.AsSpan(0, detectionCount), iouThreshold);
+        }
+        finally
+        {
+            ArrayPool<float>.Shared.Return(scoreBuffer);
+            ArrayPool<float>.Shared.Return(boxBuffer);
+            ArrayPool<FaceBox>.Shared.Return(detectionBuffer);
+        }
+    }
+
+    private void ApplyNMS(ReadOnlySpan<FaceBox> boxes, float iouThreshold)
+    {
+        // アロケーション減らす！
+        if (boxes.IsEmpty)
+        {
+            return;
+        }
+
+        var count = boxes.Length;
 
         // FaceBox配列を直接ソート（インプレース）
         var boxArray = ArrayPool<FaceBox>.Shared.Rent(count);
